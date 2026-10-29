@@ -4,308 +4,190 @@
 <PageTitle>Your Cart | FoodDash</PageTitle>
 
 <style>
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
     @@keyframes shimmer {
         0%   { background-position: -200% center; }
         100% { background-position:  200% center; }
     }
-
-    @@keyframes fadeUp {
-        from { opacity: 0; transform: translateY(24px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .st {
+    .animate-fade-up    { animation: fadeUp 0.55s ease both; }
+    .animate-fade-up-d1 { animation: fadeUp 0.55s 0.1s ease both; }
+    .shimmer-text {
         background: linear-gradient(90deg, #fb923c, #f97316, #fde68a, #f97316, #fb923c);
         background-size: 200% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-clip: text;
-        animation: shimmer 3.5s linear infinite;
+        animation: shimmer 4s linear infinite;
     }
-
-    .section-label {
-        font-size: 0.62rem;
-        font-weight: 700;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: #7c6450;
-    }
-
-    .back-link {
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: #4a3a2e;
-        text-decoration: none;
-        transition: color 0.2s;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-    }
-
-    .back-link:hover { color: #fb923c; }
-
-    /* Glass card */
-    .glass-card {
-        background: linear-gradient(160deg, rgba(255,180,60,0.06) 0%, rgba(255,255,255,0.02) 100%);
-        border: 1px solid rgba(255,180,60,0.12);
-        box-shadow: inset 0 1px 0 rgba(255,200,120,0.07), 0 8px 32px rgba(0,0,0,0.45);
-        border-radius: 1.5rem;
-    }
-
-    /* Item row */
-    .item-row {
-        background: linear-gradient(160deg, rgba(255,180,60,0.05) 0%, rgba(255,255,255,0.015) 100%);
-        border: 1px solid rgba(255,180,60,0.10);
-        box-shadow: inset 0 1px 0 rgba(255,200,120,0.05), 0 4px 16px rgba(0,0,0,0.35);
-        border-radius: 1.25rem;
-        padding: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        transition: border-color 0.2s;
-    }
-
-    .item-row:hover {
-        border-color: rgba(255,180,60,0.20);
-    }
-
-    .item-img {
-        width: 72px; height: 72px;
-        object-fit: cover;
-        border-radius: 0.875rem;
-        flex-shrink: 0;
-    }
-
-    /* Stepper */
-    .stepper {
-        display: flex;
-        align-items: center;
-        gap: 0;
-        border-radius: 999px;
-        overflow: hidden;
-        background: rgba(255,180,60,0.06);
-        border: 1px solid rgba(255,180,60,0.14);
-    }
-
-    .stepper-btn {
-        width: 34px; height: 34px;
-        display: flex; align-items: center; justify-content: center;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        color: #fb923c;
-        font-size: 1.1rem;
-        font-weight: 700;
-        transition: background 0.15s;
-    }
-
-    .stepper-btn:hover { background: rgba(249,115,22,0.12); }
-
-    .stepper-count {
-        min-width: 32px;
-        text-align: center;
-        font-weight: 700;
-        font-size: 0.9rem;
-        color: #f5ede3;
-    }
-
-    /* Remove button */
-    .remove-btn {
-        width: 32px; height: 32px;
-        display: flex; align-items: center; justify-content: center;
-        border-radius: 0.5rem;
-        background: transparent;
-        border: 1px solid rgba(255,180,60,0.10);
-        cursor: pointer;
-        color: #4a3a2e;
-        transition: background 0.2s, color 0.2s, border-color 0.2s;
-        flex-shrink: 0;
-    }
-
-    .remove-btn:hover {
-        background: rgba(239,68,68,0.12);
-        color: #f87171;
-        border-color: rgba(239,68,68,0.25);
-    }
-
-    /* Sidebar */
-    .sidebar {
-        background: linear-gradient(160deg, rgba(255,180,60,0.06) 0%, rgba(255,255,255,0.02) 100%);
-        border: 1px solid rgba(255,180,60,0.12);
-        box-shadow: inset 0 1px 0 rgba(255,200,120,0.07), 0 8px 32px rgba(0,0,0,0.45);
-        border-radius: 1.5rem;
-        padding: 1.5rem;
-    }
-
-    /* Divider */
-    .divider { border-color: rgba(255,180,60,0.10); }
-
-    /* Primary button */
     .btn-primary {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.4rem;
-        padding: 0.75rem 1.75rem;
-        border-radius: 0.875rem;
-        background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
-        box-shadow: 0 6px 24px rgba(249,115,22,0.45);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        color: #fff;
-        font-weight: 700;
-        border: none;
-        cursor: pointer;
-        text-decoration: none;
-        width: 100%;
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        transition: all 0.25s ease;
+        box-shadow: 0 8px 20px rgba(249,115,22,0.35);
     }
-
     .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 36px rgba(249,115,22,0.6);
+        box-shadow: 0 12px 30px rgba(249,115,22,0.5);
     }
-
-    /* Add more link */
-    .add-more-link {
-        display: block;
-        text-align: center;
-        font-size: 0.78rem;
-        font-weight: 700;
-        color: #fb923c;
-        text-decoration: none;
-        margin-top: 0.75rem;
-        transition: color 0.2s;
+    .cart-row {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,180,60,0.10);
+        transition: border-color 0.25s ease, background 0.25s ease;
     }
-
-    .add-more-link:hover { color: #f97316; }
-
-    /* Browse btn */
-    .btn-ghost {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.4rem;
-        padding: 0.75rem 1.75rem;
-        border-radius: 0.875rem;
-        border: 1.5px solid rgba(249,115,22,0.35);
-        color: #fb923c;
-        font-weight: 700;
-        transition: background 0.2s, border-color 0.2s;
-        cursor: pointer;
-        text-decoration: none;
-        background: transparent;
+    .cart-row:hover {
+        border-color: rgba(249,115,22,0.30);
+        background: rgba(249,115,22,0.04);
     }
-
-    .btn-ghost:hover {
-        background: rgba(249,115,22,0.09);
-        border-color: #f97316;
+    .stepper {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,180,60,0.12);
     }
+    .stepper-btn {
+        transition: all 0.2s ease;
+        color: #9ca3af;
+    }
+    .stepper-btn:hover:not(:disabled) {
+        background: rgba(249,115,22,0.15);
+        color: #f97316;
+    }
+    .stepper-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+    .sidebar {
+        background: linear-gradient(160deg, #1c1815 0%, #12100e 100%);
+        border: 1px solid rgba(255,180,60,0.12);
+    }
+    .remove-btn {
+        transition: all 0.2s ease;
+        color: #6b7280;
+    }
+    .remove-btn:hover {
+        color: #ef4444;
+        background: rgba(239,68,68,0.1);
+    }
+    .divider { border-color: rgba(255,180,60,0.10); }
 </style>
 
-<div class="min-h-screen w-full" style="background: radial-gradient(ellipse 140% 65% at 50% -5%, rgba(249,115,22,0.28) 0%, rgba(180,60,0,0.10) 38%, transparent 62%), linear-gradient(170deg, #1c0f06 0%, #100c08 45%, #0a080d 100%);">
-    <div class="max-w-5xl mx-auto px-6 pt-10 pb-24">
+<div style="min-height:100vh;
+            background: radial-gradient(ellipse 140% 65% at 50% -5%, rgba(249,115,22,0.28) 0%, rgba(180,60,0,0.10) 38%, transparent 62%),
+                        linear-gradient(170deg, #1c0f06 0%, #100c08 45%, #0a080d 100%);">
 
-        <!-- Back link -->
-        <a href="/place-order" class="back-link mb-6 block">
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-            </svg>
-            Back to Menu
-        </a>
+    <div class="max-w-5xl mx-auto px-8 pt-10 pb-28">
 
-        <!-- Heading -->
-        <div class="mb-8" style="animation: fadeUp 0.6s ease both;">
-            <p class="section-label mb-2">Review Order</p>
-            <h1 style="font-size:2.5rem; font-weight:900; color:#f5ede3; line-height:1.1;">
-                Your <span class="st">Cart</span>
-            </h1>
-            <p class="mt-2" style="color:#8a7060;">Check your items before heading to checkout.</p>
+        <!-- Header -->
+        <div class="mb-8 animate-fade-up">
+            <a href="/place-order" class="text-xs font-semibold mb-4 inline-block text-gray-500 hover:text-orange-400 transition">
+                &larr; Continue Shopping
+            </a>
+            <h1 class="text-4xl font-black text-white">Your <span class="shimmer-text">Cart</span></h1>
+            <p class="text-sm text-gray-400 mt-1.5">Review your items before checkout.</p>
         </div>
 
-        @if (!CartData.Items.Any())
+        @if (CartData.Items.Count == 0)
         {
-            <!-- Empty state -->
-            <div class="glass-card p-12 flex flex-col items-center text-center" style="animation: fadeUp 0.6s ease both;">
-                <svg width="56" height="56" fill="none" viewBox="0 0 24 24" stroke="rgba(255,180,60,0.28)" stroke-width="1.3" class="mb-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 5.3A1 1 0 006 20h12M17 20a1 1 0 100 2 1 1 0 000-2zM9 20a1 1 0 100 2 1 1 0 000-2z"/>
-                </svg>
-                <p style="font-size:1.25rem; font-weight:800; color:#f5ede3;" class="mb-2">Your cart is empty</p>
-                <p style="color:#8a7060;" class="text-sm mb-6">Looks like you haven't added anything yet. Start exploring the menu!</p>
-                <a href="/place-order" class="btn-ghost">Browse Menu</a>
+            <div class="text-center py-28 rounded-3xl"
+                 style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,180,60,0.08);">
+                <p class="text-white font-bold text-lg mb-1">Your cart is empty</p>
+                <p class="text-sm text-gray-500 mb-8">Looks like you haven't added anything yet.</p>
+                <a href="/place-order" class="btn-primary px-8 py-3 rounded-full text-sm font-bold text-white inline-block">
+                    Browse Menu
+                </a>
             </div>
         }
         else
         {
-            <div class="flex flex-col lg:flex-row gap-8 items-start" style="animation: fadeUp 0.65s ease 0.05s both;">
+            <div class="flex flex-col lg:flex-row gap-6 items-start animate-fade-up-d1">
 
                 <!-- Items list -->
-                <div class="flex-1 flex flex-col gap-4">
-                    @foreach (var item in CartData.Items)
-                    {
-                        <div class="item-row">
-                            <img class="item-img" src="images/@(item.MenuItem.ImageFile)" alt="@item.MenuItem.Name" />
+                <div class="flex-1">
+                    <p class="text-xs font-bold text-orange-400 uppercase tracking-[0.18em] mb-4">
+                        @CartData.Count item@(CartData.Count != 1 ? "s" : "")
+                    </p>
+                    <div class="space-y-3">
+                        @foreach (var cartItem in CartData.Items)
+                        {
+                            <div class="cart-row rounded-2xl p-4 flex items-center gap-4">
 
-                            <div class="flex-1 min-w-0">
-                                <p style="font-weight:800; color:#f5ede3; font-size:0.97rem;">@item.MenuItem.Name</p>
-                                <p style="font-size:0.78rem; color:#7c6450;" class="mt-0.5">@item.MenuItem.Category</p>
-                                <p style="font-size:0.88rem; color:#fb923c; font-weight:700;" class="mt-0.5">₱@item.MenuItem.Price.ToString("N2")</p>
+                                <!-- Image -->
+                                <div class="w-16 h-16 rounded-xl overflow-hidden bg-white/5 border border-white/10 shrink-0">
+                                    @if (!string.IsNullOrEmpty(cartItem.Item.ImageUrl))
+                                    {
+                                        <img src="@cartItem.Item.ImageUrl" alt="@cartItem.Item.Name" class="w-full h-full object-cover" />
+                                    }
+                                    else
+                                    {
+                                        <div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400 text-center px-1">@cartItem.Item.Name</div>
+                                    }
+                                </div>
+
+                                <!-- Info -->
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-bold text-white text-sm truncate">@cartItem.Item.Name</h3>
+                                    <p class="text-xs text-gray-400 mt-0.5">
+                                        @cartItem.Item.Category &middot; <span class="text-orange-400 font-semibold">₱@cartItem.Item.Price.ToString("N2")</span> each
+                                    </p>
+                                </div>
+
+                                <!-- Stepper -->
+                                <div class="stepper flex items-center gap-1 rounded-xl px-1 py-1 shrink-0">
+                                    <button type="button" @onclick="() => CartData.Decrease(cartItem.Item.Id)"
+                                            aria-label="Decrease quantity"
+                                            class="stepper-btn w-7 h-7 rounded-lg flex items-center justify-center font-bold text-sm">
+                                        &minus;
+                                    </button>
+                                    <span class="w-7 text-center text-sm font-extrabold text-white">@cartItem.Quantity</span>
+                                    <button type="button" @onclick="() => CartData.Increase(cartItem.Item.Id)"
+                                            disabled="@(cartItem.Quantity >= CartService.MaxQuantityPerItem)"
+                                            aria-label="Increase quantity"
+                                            class="stepper-btn w-7 h-7 rounded-lg flex items-center justify-center font-bold text-sm">
+                                        +
+                                    </button>
+                                </div>
+
+                                <!-- Line total -->
+                                <div class="w-24 text-right shrink-0">
+                                    <p class="font-extrabold text-white text-sm">₱@cartItem.TotalPrice.ToString("N2")</p>
+                                </div>
+
+                                <!-- Remove -->
+                                <button type="button" @onclick="() => CartData.Remove(cartItem.Item.Id)"
+                                        aria-label="Remove item"
+                                        class="remove-btn px-2.5 py-1 rounded-lg text-xs font-semibold shrink-0">
+                                    Remove
+                                </button>
                             </div>
-
-                            <!-- Stepper -->
-                            <div class="stepper">
-                                <button class="stepper-btn" @onclick="() => CartData.Decrement(item.MenuItem)">−</button>
-                                <span class="stepper-count">@item.Quantity</span>
-                                <button class="stepper-btn" @onclick="() => CartData.Increment(item.MenuItem)">+</button>
-                            </div>
-
-                            <!-- Line total -->
-                            <p style="min-width:5rem; text-align:right; font-weight:700; color:#f5ede3; font-size:0.92rem;">
-                                ₱@((item.MenuItem.Price * item.Quantity).ToString("N2"))
-                            </p>
-
-                            <!-- Remove -->
-                            <button class="remove-btn" @onclick="() => CartData.Remove(item.MenuItem)" title="Remove">
-                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
-                            </button>
-                        </div>
-                    }
+                        }
+                    </div>
                 </div>
 
                 <!-- Sidebar -->
-                <div class="sidebar w-full lg:w-80 lg:sticky lg:top-8">
-                    <p class="section-label mb-4">Order Summary</p>
+                <div class="w-full lg:w-72 shrink-0 sidebar rounded-3xl p-6 sticky top-6">
+                    <p class="text-xs font-bold text-orange-400 uppercase tracking-[0.18em] mb-5">Order Summary</p>
 
-                    <div class="flex flex-col gap-3">
-                        <div class="flex justify-between">
-                            <span style="color:#8a7060; font-size:0.88rem;">Subtotal</span>
-                            <span style="color:#f5ede3; font-weight:700; font-size:0.88rem;">₱@CartData.Subtotal.ToString("N2")</span>
+                    <div class="space-y-3 text-sm mb-5">
+                        <div class="flex justify-between text-gray-400">
+                            <span>Subtotal (@CartData.Count items)</span>
+                            <span class="font-semibold text-gray-200">₱@CartData.Total.ToString("N2")</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span style="color:#8a7060; font-size:0.88rem;">Delivery</span>
-                            <span style="color:#22c55e; font-weight:700; font-size:0.88rem;">Free</span>
+                        <div class="flex justify-between text-gray-400">
+                            <span>Delivery Fee</span>
+                            <span class="font-semibold text-emerald-400">Free</span>
                         </div>
                     </div>
 
-                    <hr class="divider my-4" />
-
-                    <div class="flex justify-between items-baseline mb-6">
-                        <span style="color:#f5ede3; font-weight:800;">Total</span>
-                        <span class="st" style="font-size:1.3rem; font-weight:900;">₱@CartData.Subtotal.ToString("N2")</span>
+                    <div class="border-t divider pt-4 mb-6 flex justify-between items-center">
+                        <span class="font-bold text-white">Total</span>
+                        <span class="text-2xl font-black text-orange-400">₱@CartData.Total.ToString("N2")</span>
                     </div>
 
-                    <a href="/checkout" class="btn-primary">
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                        </svg>
+                    <a href="/checkout" class="btn-primary block w-full text-center py-3.5 rounded-full font-bold text-sm text-white">
                         Proceed to Checkout
                     </a>
-
-                    <a href="/place-order" class="add-more-link">+ Add more items</a>
+                    <a href="/place-order" class="block text-center mt-4 text-xs text-gray-500 hover:text-orange-400 font-semibold transition">
+                        + Add more items
+                    </a>
                 </div>
 
             </div>
         }
-
     </div>
 </div>
