@@ -1,1 +1,31 @@
-﻿
+@implements IDisposable
+@inject CartService Cart
+
+<nav class="flex flex-wrap items-center justify-between gap-y-4 px-8 py-6 max-w-7xl mx-auto">
+    <a href="/" class="text-2xl font-extrabold text-orange-500">Food<span class="text-gray-800">Dash</span></a>
+
+    <div class="order-3 flex w-full justify-center gap-6 text-sm font-semibold md:order-none md:w-auto md:gap-8">
+        <NavLink href="/" Match="NavLinkMatch.All" class="text-gray-800 hover:text-orange-500 [&.active]:text-orange-500">Home</NavLink>
+        <NavLink href="/place-order" class="text-gray-800 hover:text-orange-500 [&.active]:text-orange-500">Menu</NavLink>
+        <NavLink href="/cart" class="text-gray-800 hover:text-orange-500 [&.active]:text-orange-500">Cart</NavLink>
+        <NavLink href="/track-order" class="text-gray-800 hover:text-orange-500 [&.active]:text-orange-500">Track Order</NavLink>
+    </div>
+
+    <a href="/cart" aria-label="Open cart, @Cart.Count items" class="relative text-gray-600 hover:text-orange-500">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 2.3a1 1 0 00.7 1.7H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        @if (Cart.Count > 0)
+        {
+            <span class="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-orange-500 px-1 text-[10px] font-bold text-white">@Cart.Count</span>
+        }
+    </a>
+</nav>
+
+@code {
+    protected override void OnInitialized() => Cart.Changed += OnCartChanged;
+
+    private void OnCartChanged() => _ = InvokeAsync(StateHasChanged);
+
+    public void Dispose() => Cart.Changed -= OnCartChanged;
+}
