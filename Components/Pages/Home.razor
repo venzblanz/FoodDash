@@ -2,82 +2,170 @@
 
 <PageTitle>FoodDash | Quick and Tasty Food Delivery</PageTitle>
 
-<div>
-    <!-- Hero Section -->
-    <section class="flex flex-col md:flex-row items-center justify-between px-8 py-12 max-w-7xl mx-auto relative">
+<div class="min-h-screen bg-[#FAFAF8]">
+
+    <!-- NAV BAR -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-xl bg-orange-500 flex items-center justify-center shadow-md">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7H1v-2h15.03v2zm0-4H1v-2h15.03v2z"/>
+                    </svg>
+                </span>
+                <span class="font-extrabold text-gray-900 text-lg tracking-tight">Food<span class="text-orange-500">Dash</span></span>
+            </a>
+            <div class="flex items-center gap-3">
+                <a href="/place-order" class="text-sm font-semibold text-gray-600 hover:text-orange-500 transition px-3 py-2">Menu</a>
+                <a href="/track-order" class="text-sm font-semibold text-gray-600 hover:text-orange-500 transition px-3 py-2">Track Order</a>
+                <a href="/cart" class="ml-2 px-5 py-2 bg-orange-500 text-white rounded-full text-sm font-bold shadow hover:bg-orange-600 transition">Cart</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="max-w-7xl mx-auto px-8 pt-20 pb-24 flex flex-col md:flex-row items-center gap-12">
         <div class="md:w-1/2 z-10">
-            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-4">
-                Quick <span class="text-gray-800 font-normal">and</span> Tasty<br />
-                Food Delivered <span class="text-gray-800 font-normal">with</span> <span class="text-orange-500">a</span><br />
-                <span class="text-orange-500">Dash</span> <span class="text-gray-800 font-normal">of</span> Speed
+            <span class="inline-block mb-4 px-4 py-1.5 bg-orange-50 border border-orange-200 text-orange-600 text-xs font-bold rounded-full tracking-wide uppercase">
+                🚀 30-Min Delivery Guarantee
+            </span>
+            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight text-gray-900 mb-6">
+                Quick &amp; Tasty<br />
+                Food, Delivered<br />
+                <span class="text-orange-500">in a Dash.</span>
             </h1>
-            <div class="flex gap-4 mt-8">
-                <a href="/place-order" class="px-8 py-3 bg-orange-500 text-white rounded-full font-semibold shadow-lg hover:bg-orange-600 transition">Order Now</a>
-                <a href="/track-order" class="px-8 py-3 border-2 border-orange-500 text-orange-500 rounded-full font-semibold hover:bg-orange-50 transition">Track Order</a>
+            <p class="text-gray-500 text-lg mb-10 leading-relaxed max-w-md">
+                Fresh Filipino favorites and Italian classics — brought straight to your door, hot and on time.
+            </p>
+            <div class="flex gap-4">
+                <a href="/place-order"
+                   class="px-8 py-3.5 bg-orange-500 text-white rounded-full font-bold shadow-lg shadow-orange-200 hover:bg-orange-600 transition text-sm">
+                    Order Now
+                </a>
+                <a href="/track-order"
+                   class="px-8 py-3.5 border-2 border-gray-200 text-gray-700 rounded-full font-bold hover:border-orange-500 hover:text-orange-500 transition text-sm">
+                    Track Order
+                </a>
             </div>
         </div>
-        <div class="md:w-1/2 mt-12 md:mt-0 relative">
-            <div class="w-full aspect-square bg-orange-100 rounded-full flex items-center justify-center shadow-2xl overflow-hidden">
-                <img src="images/food2.png" alt="plate" class="w-full h-full object-cover rounded-full" />
+        <div class="md:w-1/2 flex justify-center relative">
+            <div class="w-80 h-80 md:w-[420px] md:h-[420px] rounded-full bg-gradient-to-br from-orange-100 to-orange-50 shadow-2xl shadow-orange-100 overflow-hidden border-4 border-white">
+                <img src="images/food2.png" alt="Featured dish" class="w-full h-full object-cover" />
             </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="max-w-7xl mx-auto px-8 py-8 mb-12">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row justify-between gap-6">
-            <div class="flex items-center gap-4">
-                <div class="text-6xl">⏱️</div>
-                <div>
-                    <h3 class="font-bold text-gray-800">Fast Delivery</h3>
-                    <p class="text-xs text-gray-500">Promise To Deliver Within 30 Mins</p>
+            <!-- Floating badge -->
+            <div class="absolute bottom-6 left-0 md:-left-4 bg-white rounded-2xl shadow-xl px-5 py-3 border border-gray-100 flex items-center gap-3">
+                <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
+                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
                 </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="text-6xl">🥬</div>
                 <div>
-                    <h3 class="font-bold text-gray-800">Fresh Food</h3>
-                    <p class="text-xs text-gray-500">Your Food Will Be Delivered 100% Fresh</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="text-6xl">📦</div>
-                <div>
-                    <h3 class="font-bold text-gray-800">Free Delivery</h3>
-                    <p class="text-xs text-gray-500">Your Food Delivery Is Absolutely Free</p>
+                    <p class="text-xs text-gray-400 font-medium">Delivered fresh</p>
+                    <p class="text-sm font-bold text-gray-800">100% Guaranteed</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Best Delivered Dishes -->
-    <section class="max-w-7xl mx-auto px-8 py-12 text-center">
-        <h2 class="text-3xl font-extrabold mb-2 text-left">Our <span class="text-orange-500">Best Delivered</span> Dishes</h2>
-        <div class="flex flex-wrap justify-center gap-42 mt-12">
-            <!-- Item 1 -->
-            <div class="flex flex-col items-center">
-                <div class="w-62 h-62 rounded-full border-4 border-dashed border-orange-400 p-1 mb-4 bg-white overflow-hidden">
-                    <img src="images/lasagna.png" alt="Lasagna" class="w-full h-full object-cover rounded-full" />
+    <!-- FEATURES -->
+    <section class="max-w-7xl mx-auto px-8 mb-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-5 hover:shadow-md transition group">
+                <div class="w-14 h-14 rounded-xl bg-orange-50 flex items-center justify-center shrink-0 group-hover:bg-orange-100 transition">
+                    <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
                 </div>
-                <h4 class="font-bold text-sm">Lasagna</h4>
-                <a href="/place-order?search=Lasagna" class="text-orange-500 text-sm font-semibold mt-2">Order Now &rarr;</a>
-            </div>
-            <!-- Item 2 -->
-            <div class="flex flex-col items-center">
-                <div class="w-62 h-62 rounded-full border-4 border-dashed border-orange-400 p-1 mb-4 bg-white overflow-hidden">
-                    <img src="images/halohalo.png" alt="HaloHalo" class="w-full h-full object-cover rounded-full" />
+                <div>
+                    <h3 class="font-bold text-gray-800 text-sm mb-0.5">Fast Delivery</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Delivered to your door within 30 minutes, every time.</p>
                 </div>
-                <h4 class="font-bold text-sm">Halo-Halo</h4>
-                <a href="/place-order?search=Halo-Halo" class="text-orange-500 text-sm font-semibold mt-2">Order Now &rarr;</a>
             </div>
-            <!-- Item 3 -->
-            <div class="flex flex-col items-center">
-                <div class="w-62 h-62 rounded-full border-4 border-dashed border-orange-400 p-1 mb-4 bg-white overflow-hidden">
-                    <img src="images/sisig.png" alt="sisig" class="w-full h-full object-cover rounded-full" />
+
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-5 hover:shadow-md transition group">
+                <div class="w-14 h-14 rounded-xl bg-green-50 flex items-center justify-center shrink-0 group-hover:bg-green-100 transition">
+                    <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 0c0 0-4 4-4 8s4 8 4 8m0-16c0 0 4 4 4 8s-4 8-4 8M2 12h20"/>
+                    </svg>
                 </div>
-                <h4 class="font-bold text-sm">Sisig</h4>
-                <a href="/place-order?search=Sisig" class="text-orange-500 text-sm font-semibold mt-2">Order Now &rarr;</a>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-sm mb-0.5">Always Fresh</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Every dish prepared fresh — no reheating, ever.</p>
+                </div>
             </div>
+
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-5 hover:shadow-md transition group">
+                <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition">
+                    <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 3v4M8 3v4"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-sm mb-0.5">Free Delivery</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">No hidden fees. Every order ships absolutely free.</p>
+                </div>
+            </div>
+
         </div>
     </section>
+
+    <!-- BEST DISHES -->
+    <section class="max-w-7xl mx-auto px-8 pb-24">
+        <div class="flex items-end justify-between mb-12">
+            <div>
+                <p class="text-xs font-bold text-orange-500 uppercase tracking-widest mb-2">Staff Picks</p>
+                <h2 class="text-3xl font-extrabold text-gray-900">Our <span class="text-orange-500">Best Delivered</span> Dishes</h2>
+            </div>
+            <a href="/place-order" class="text-sm font-semibold text-gray-400 hover:text-orange-500 transition">View full menu →</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <div class="group bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
+                <div class="h-52 bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center overflow-hidden">
+                    <img src="images/lasagna.png" alt="Lasagna" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                </div>
+                <div class="p-5 flex flex-col gap-3 flex-1">
+                    <h4 class="font-bold text-gray-800">Lasagna</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed flex-1">Rich layers of pasta, meat sauce, and béchamel — baked to golden perfection.</p>
+                    <a href="/place-order?search=Lasagna"
+                       class="w-full text-center px-5 py-2.5 bg-orange-500 text-white rounded-full text-xs font-bold hover:bg-orange-600 transition shadow-sm shadow-orange-200">
+                        Order Now
+                    </a>
+                </div>
+            </div>
+
+            <div class="group bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
+                <div class="h-52 bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center overflow-hidden">
+                    <img src="images/halohalo.png" alt="Halo-Halo" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                </div>
+                <div class="p-5 flex flex-col gap-3 flex-1">
+                    <h4 class="font-bold text-gray-800">Halo-Halo</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed flex-1">The iconic Filipino dessert — shaved ice, leche flan, ube, and fresh fruits.</p>
+                    <a href="/place-order?search=Halo-Halo"
+                       class="w-full text-center px-5 py-2.5 bg-orange-500 text-white rounded-full text-xs font-bold hover:bg-orange-600 transition shadow-sm shadow-orange-200">
+                        Order Now
+                    </a>
+                </div>
+            </div>
+
+            <div class="group bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
+                <div class="h-52 bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center overflow-hidden">
+                    <img src="images/sisig.png" alt="Sisig" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                </div>
+                <div class="p-5 flex flex-col gap-3 flex-1">
+                    <h4 class="font-bold text-gray-800">Sisig</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed flex-1">Sizzling Kapampangan classic — crispy pork, onions, and calamansi on a hot plate.</p>
+                    <a href="/place-order?search=Sisig"
+                       class="w-full text-center px-5 py-2.5 bg-orange-500 text-white rounded-full text-xs font-bold hover:bg-orange-600 transition shadow-sm shadow-orange-200">
+                        Order Now
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
 </div>
