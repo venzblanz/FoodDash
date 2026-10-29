@@ -1,13 +1,13 @@
 @page "/cart"
-@using Blanza_Midterm.Models
-@using Blanza_Midterm.Services
 @inject CartService CartData
+
+<PageTitle>Your Cart | FoodDash</PageTitle>
 
 <div class="p-8 max-w-4xl mx-auto">
     <!-- Header -->
     <div class="mb-8">
-        <a href="/place-order" class="!no-underline !text-gray-400 hover:!text-orange-500 text-sm font-semibold mb-2 inline-block">&larr; Continue Shopping</a>
-        <h2 class="text-3xl font-extrabold text-gray-800">Your <span class="text-orange-500">Cart</span></h2>
+        <a href="/place-order" class="text-gray-400 hover:text-orange-500 text-sm font-semibold mb-2 inline-block">&larr; Continue Shopping</a>
+        <h1 class="text-3xl font-extrabold text-gray-800">Your <span class="text-orange-500">Cart</span></h1>
         <p class="text-xs text-gray-400 mt-1">Review your items before checkout.</p>
     </div>
 
@@ -15,7 +15,7 @@
     {
         <div class="text-center py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
             <p class="text-gray-500 font-semibold mb-4">Your cart is currently empty.</p>
-            <a href="/place-order" class="!no-underline !text-white px-6 py-2 bg-orange-500 rounded-full font-semibold hover:bg-orange-600 transition inline-block">Browse Menu</a>
+            <a href="/place-order" class="px-6 py-2 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 transition inline-block">Browse Menu</a>
         </div>
     }
     else
@@ -45,14 +45,21 @@
 
                         <div class="flex items-center gap-6">
                             <div class="flex items-center gap-3 bg-white px-3 py-1 rounded-full border border-gray-200">
-                                <button type="button" @onclick="() => CartData.Decrease(cartItem.Item.Id)" class="text-gray-500 hover:text-orange-500 font-bold">-</button>
+                                <button type="button" @onclick="() => CartData.Decrease(cartItem.Item.Id)"
+                                        aria-label="Decrease quantity of @cartItem.Item.Name"
+                                        class="text-gray-500 hover:text-orange-500 font-bold">-</button>
                                 <span class="text-sm font-bold text-gray-800">@cartItem.Quantity</span>
-                                <button type="button" @onclick="() => CartData.Increase(cartItem.Item.Id)" class="text-gray-500 hover:text-orange-500 font-bold">+</button>
+                                <button type="button" @onclick="() => CartData.Increase(cartItem.Item.Id)"
+                                        disabled="@(cartItem.Quantity >= CartService.MaxQuantityPerItem)"
+                                        aria-label="Increase quantity of @cartItem.Item.Name"
+                                        class="text-gray-500 hover:text-orange-500 font-bold disabled:opacity-30 disabled:cursor-not-allowed">+</button>
                             </div>
                             <div class="text-right w-24">
                                 <p class="font-extrabold text-gray-800">₱@cartItem.TotalPrice.ToString("N2")</p>
                             </div>
-                            <button type="button" @onclick="() => CartData.Remove(cartItem.Item.Id)" aria-label="Remove @cartItem.Item.Name" class="text-gray-300 hover:text-red-500 transition">✕</button>
+                            <button type="button" @onclick="() => CartData.Remove(cartItem.Item.Id)"
+                                    aria-label="Remove @cartItem.Item.Name"
+                                    class="text-gray-300 hover:text-red-500 transition">✕</button>
                         </div>
                     </div>
                 }
@@ -76,7 +83,7 @@
         </div>
 
         <div class="flex justify-end">
-            <a href="/checkout" class="!no-underline !text-white px-8 py-3 bg-orange-500 rounded-full font-bold shadow-lg hover:bg-orange-600 transition text-lg">
+            <a href="/checkout" class="px-8 py-3 bg-orange-500 text-white rounded-full font-bold shadow-lg hover:bg-orange-600 transition text-lg">
                 Proceed to Checkout
             </a>
         </div>
