@@ -3,89 +3,204 @@
 
 <PageTitle>Your Cart | FoodDash</PageTitle>
 
-<div class="p-8 max-w-4xl mx-auto">
-    <!-- Header -->
-    <div class="mb-8">
-        <a href="/place-order" class="text-gray-400 hover:text-orange-500 text-sm font-semibold mb-2 inline-block">&larr; Continue Shopping</a>
-        <h1 class="text-3xl font-extrabold text-gray-800">Your <span class="text-orange-500">Cart</span></h1>
-        <p class="text-xs text-gray-400 mt-1">Review your items before checkout.</p>
+<style>
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @@keyframes shimmer {
+        0%   { background-position: -200% center; }
+        100% { background-position:  200% center; }
+    }
+    .animate-fade-up    { animation: fadeUp 0.55s ease both; }
+    .animate-fade-up-d1 { animation: fadeUp 0.55s 0.1s ease both; }
+    .shimmer-text {
+        background: linear-gradient(90deg, #fb923c, #f97316, #fdba74, #f97316, #fb923c);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 4s linear infinite;
+    }
+    .btn-primary {
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        transition: all 0.25s ease;
+        box-shadow: 0 8px 20px rgba(249,115,22,0.35);
+    }
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(249,115,22,0.5);
+    }
+    .cart-row {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.07);
+        transition: border-color 0.25s ease, background 0.25s ease;
+    }
+    .cart-row:hover {
+        border-color: rgba(249,115,22,0.25);
+        background: rgba(249,115,22,0.04);
+    }
+    .stepper {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.09);
+    }
+    .stepper-btn {
+        transition: all 0.2s ease;
+        color: #6b7280;
+    }
+    .stepper-btn:hover:not(:disabled) {
+        background: rgba(249,115,22,0.15);
+        color: #f97316;
+    }
+    .stepper-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+    .sidebar {
+        background: linear-gradient(145deg, #1a1a1c, #141416);
+        border: 1px solid rgba(255,255,255,0.07);
+    }
+    .remove-btn {
+        transition: all 0.2s ease;
+        color: #374151;
+    }
+    .remove-btn:hover {
+        color: #f87171;
+        background: rgba(248,113,113,0.1);
+    }
+    .divider { border-color: rgba(255,255,255,0.07); }
+</style>
+
+<div class="min-h-screen bg-[#0e0e10] text-white">
+
+    <!-- Background glow -->
+    <div class="pointer-events-none fixed inset-0 overflow-hidden">
+        <div class="absolute top-1/4 left-0 w-[500px] h-[500px] rounded-full bg-orange-500/7 blur-[130px]"></div>
+        <div class="absolute bottom-0 right-1/4 w-[350px] h-[350px] rounded-full bg-orange-700/5 blur-[100px]"></div>
     </div>
 
-    @if (CartData.Items.Count == 0)
-    {
-        <div class="text-center py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
-            <p class="text-gray-500 font-semibold mb-4">Your cart is currently empty.</p>
-            <a href="/place-order" class="px-6 py-2 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 transition inline-block">Browse Menu</a>
-        </div>
-    }
-    else
-    {
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-8">
-            <!-- Cart Items -->
-            <div class="space-y-4 mb-6">
-                @foreach (var cartItem in CartData.Items)
-                {
-                    <div class="flex items-center justify-between p-4 bg-orange-50/50 rounded-2xl border border-orange-100">
-                        <div class="flex items-center gap-4">
-                            <div class="w-16 h-16 bg-white rounded-full border border-orange-200 flex items-center justify-center overflow-hidden">
-                                @if (!string.IsNullOrEmpty(cartItem.Item.ImageUrl))
-                                {
-                                    <img src="@cartItem.Item.ImageUrl" alt="@cartItem.Item.Name" class="w-full h-full object-cover" />
-                                }
-                                else
-                                {
-                                    <span class="text-[8px] text-gray-400">@cartItem.Item.Name</span>
-                                }
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-gray-800 text-sm">@cartItem.Item.Name</h3>
-                                <p class="text-xs text-orange-500 font-semibold">@cartItem.Item.Category · ₱@cartItem.Item.Price.ToString("N2") each</p>
-                            </div>
-                        </div>
+    <div class="relative max-w-5xl mx-auto px-8 pt-10 pb-28">
 
-                        <div class="flex items-center gap-6">
-                            <div class="flex items-center gap-3 bg-white px-3 py-1 rounded-full border border-gray-200">
-                                <button type="button" @onclick="() => CartData.Decrease(cartItem.Item.Id)"
-                                        aria-label="Decrease quantity of @cartItem.Item.Name"
-                                        class="text-gray-500 hover:text-orange-500 font-bold">-</button>
-                                <span class="text-sm font-bold text-gray-800">@cartItem.Quantity</span>
-                                <button type="button" @onclick="() => CartData.Increase(cartItem.Item.Id)"
-                                        disabled="@(cartItem.Quantity >= CartService.MaxQuantityPerItem)"
-                                        aria-label="Increase quantity of @cartItem.Item.Name"
-                                        class="text-gray-500 hover:text-orange-500 font-bold disabled:opacity-30 disabled:cursor-not-allowed">+</button>
+        <!-- Header -->
+        <div class="mb-8 animate-fade-up">
+            <a href="/place-order" class="inline-flex items-center gap-1.5 text-gray-600 hover:text-orange-400 text-xs font-semibold mb-4 transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Continue Shopping
+            </a>
+            <h1 class="text-4xl font-black text-white">Your <span class="shimmer-text">Cart</span></h1>
+            <p class="text-sm text-gray-500 mt-1.5">Review your items before checkout.</p>
+        </div>
+
+        @if (CartData.Items.Count == 0)
+        {
+            <div class="text-center py-28 rounded-3xl border border-white/5 bg-white/[0.02]">
+                <div class="w-16 h-16 rounded-2xl bg-orange-500/10 border border-orange-500/15 flex items-center justify-center mx-auto mb-5">
+                    <svg class="w-8 h-8 text-orange-500/60" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+                    </svg>
+                </div>
+                <p class="text-white font-bold text-lg mb-1">Your cart is empty</p>
+                <p class="text-sm text-gray-600 mb-8">Looks like you haven't added anything yet.</p>
+                <a href="/place-order" class="btn-primary px-8 py-3 rounded-full text-sm font-bold text-white inline-block">
+                    Browse Menu
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="flex flex-col lg:flex-row gap-6 items-start animate-fade-up-d1">
+
+                <!-- Items list -->
+                <div class="flex-1">
+                    <p class="text-xs font-bold text-gray-600 uppercase tracking-[0.18em] mb-4">
+                        @CartData.Count item@(CartData.Count != 1 ? "s" : "")
+                    </p>
+                    <div class="space-y-3">
+                        @foreach (var cartItem in CartData.Items)
+                        {
+                            <div class="cart-row rounded-2xl p-4 flex items-center gap-4">
+
+                                <!-- Image -->
+                                <div class="w-16 h-16 rounded-xl overflow-hidden bg-white/5 border border-white/08 shrink-0">
+                                    @if (!string.IsNullOrEmpty(cartItem.Item.ImageUrl))
+                                    {
+                                        <img src="@cartItem.Item.ImageUrl" alt="@cartItem.Item.Name" class="w-full h-full object-cover" />
+                                    }
+                                    else
+                                    {
+                                        <div class="w-full h-full flex items-center justify-center text-[9px] text-gray-600 text-center px-1">@cartItem.Item.Name</div>
+                                    }
+                                </div>
+
+                                <!-- Info -->
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-bold text-white text-sm truncate">@cartItem.Item.Name</h3>
+                                    <p class="text-xs text-gray-500 mt-0.5">
+                                        @cartItem.Item.Category &middot; <span class="text-orange-400 font-semibold">₱@cartItem.Item.Price.ToString("N2")</span> each
+                                    </p>
+                                </div>
+
+                                <!-- Stepper -->
+                                <div class="stepper flex items-center gap-1 rounded-xl px-1 py-1 shrink-0">
+                                    <button type="button" @onclick="() => CartData.Decrease(cartItem.Item.Id)"
+                                            aria-label="Decrease quantity of @cartItem.Item.Name"
+                                            class="stepper-btn w-7 h-7 rounded-lg flex items-center justify-center font-bold text-sm">
+                                        −
+                                    </button>
+                                    <span class="w-7 text-center text-sm font-extrabold text-white">@cartItem.Quantity</span>
+                                    <button type="button" @onclick="() => CartData.Increase(cartItem.Item.Id)"
+                                            disabled="@(cartItem.Quantity >= CartService.MaxQuantityPerItem)"
+                                            aria-label="Increase quantity of @cartItem.Item.Name"
+                                            class="stepper-btn w-7 h-7 rounded-lg flex items-center justify-center font-bold text-sm">
+                                        +
+                                    </button>
+                                </div>
+
+                                <!-- Line total -->
+                                <div class="w-24 text-right shrink-0">
+                                    <p class="font-extrabold text-white text-sm">₱@cartItem.TotalPrice.ToString("N2")</p>
+                                </div>
+
+                                <!-- Remove -->
+                                <button type="button" @onclick="() => CartData.Remove(cartItem.Item.Id)"
+                                        aria-label="Remove @cartItem.Item.Name"
+                                        class="remove-btn w-8 h-8 rounded-lg flex items-center justify-center shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
                             </div>
-                            <div class="text-right w-24">
-                                <p class="font-extrabold text-gray-800">₱@cartItem.TotalPrice.ToString("N2")</p>
-                            </div>
-                            <button type="button" @onclick="() => CartData.Remove(cartItem.Item.Id)"
-                                    aria-label="Remove @cartItem.Item.Name"
-                                    class="text-gray-300 hover:text-red-500 transition">✕</button>
+                        }
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="w-full lg:w-72 shrink-0 sidebar rounded-3xl p-6 sticky top-6">
+                    <p class="text-xs font-bold text-gray-600 uppercase tracking-[0.18em] mb-5">Order Summary</p>
+
+                    <div class="space-y-3 text-sm mb-5">
+                        <div class="flex justify-between text-gray-400">
+                            <span>Subtotal (@CartData.Count items)</span>
+                            <span class="font-semibold text-gray-200">₱@CartData.Total.ToString("N2")</span>
+                        </div>
+                        <div class="flex justify-between text-gray-400">
+                            <span>Delivery Fee</span>
+                            <span class="font-semibold text-emerald-400">Free</span>
                         </div>
                     </div>
-                }
-            </div>
 
-            <!-- Totals -->
-            <div class="border-t border-gray-100 pt-6">
-                <div class="flex justify-between text-sm text-gray-600 mb-2">
-                    <span>Subtotal (@CartData.Count items)</span>
-                    <span class="font-bold text-gray-800">₱@CartData.Total.ToString("N2")</span>
-                </div>
-                <div class="flex justify-between text-sm text-gray-600 mb-4">
-                    <span>Delivery Fee</span>
-                    <span class="font-bold text-gray-800">Free</span>
-                </div>
-                <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
-                    <span class="text-lg font-bold text-gray-800">Total</span>
-                    <span class="text-2xl font-extrabold text-orange-500">₱@CartData.Total.ToString("N2")</span>
-                </div>
-            </div>
-        </div>
+                    <div class="border-t divider pt-4 mb-6 flex justify-between items-center">
+                        <span class="font-bold text-white">Total</span>
+                        <span class="text-2xl font-black text-orange-400">₱@CartData.Total.ToString("N2")</span>
+                    </div>
 
-        <div class="flex justify-end">
-            <a href="/checkout" class="px-8 py-3 bg-orange-500 text-white rounded-full font-bold shadow-lg hover:bg-orange-600 transition text-lg">
-                Proceed to Checkout
-            </a>
-        </div>
-    }
+                    <a href="/checkout" class="btn-primary block w-full text-center py-3.5 rounded-full font-bold text-sm text-white">
+                        Proceed to Checkout
+                    </a>
+                    <a href="/place-order" class="block text-center mt-4 text-xs text-gray-600 hover:text-orange-400 font-semibold transition">
+                        + Add more items
+                    </a>
+                </div>
+
+            </div>
+        }
+    </div>
 </div>
