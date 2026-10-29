@@ -1,59 +1,70 @@
-﻿@page "/place-order"
-@using Blanza_Midterm.Models
-@using Blanza_Midterm.Services
+@page "/place-order"
 @inject CartService Cart
+@inject MenuService Menu
+
+<PageTitle>Menu | FoodDash</PageTitle>
 
 <div class="p-8">
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
-        <div class="flex items-center justify-between mb-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
             <div>
-                <a href="/" class="!no-underline !text-gray-400 hover:!text-orange-500 text-sm font-semibold mb-2 inline-block">&larr; Back to Home</a>
-                <h2 class="text-3xl font-extrabold text-gray-800">Our <span class="text-orange-500">Regular</span> Menu</h2>
+                <a href="/" class="text-gray-400 hover:text-orange-500 text-sm font-semibold mb-2 inline-block">&larr; Back to Home</a>
+                <h1 class="text-3xl font-extrabold text-gray-800">Our <span class="text-orange-500">Regular</span> Menu</h1>
                 <p class="text-xs text-gray-400 mt-1">Filipino Favorites & Italian Classics.</p>
             </div>
-            <a href="/cart" class="!no-underline !text-white px-6 py-2 bg-orange-500 rounded-full font-semibold shadow-md hover:bg-orange-600 transition text-sm inline-block">
+            <a href="/cart" class="px-6 py-2 bg-orange-500 text-white rounded-full font-semibold shadow-md hover:bg-orange-600 transition text-sm">
                 View Cart (@Cart.Count)
             </a>
         </div>
 
-        <!-- Menu Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            @foreach (var item in MenuItems)
+        <!-- Search and category filter -->
+        <div class="flex flex-wrap items-center gap-3 mb-8">
+            <input type="search" @bind="searchTerm" @bind:event="oninput" placeholder="Search dishes..."
+                   aria-label="Search dishes"
+                   class="w-full sm:w-64 px-4 py-2 bg-white border border-gray-200 rounded-full text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500" />
+
+            <button type="button" @onclick="() => category = null"
+                    class="@ChipClass(category is null)">All</button>
+            @foreach (var c in Menu.GetCategories())
             {
-                <div class="bg-orange-50/50 rounded-2xl p-4 flex flex-col items-center text-center shadow-sm border border-orange-100">
-                    <div class="w-32 h-32 rounded-full border-2 border-dashed border-orange-400 p-1 mb-4 bg-white overflow-hidden">
-                        @if (!string.IsNullOrEmpty(item.ImageUrl))
-                        {
-                            <img src="@item.ImageUrl" alt="@item.Name" class="w-full h-full object-cover rounded-full" />
-                        }
-                        else
-                        {
-                            <div class="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-center text-[10px] text-gray-400">@item.Name</div>
-                        }
-                    </div>
-                    <h3 class="text-sm font-bold text-gray-800"><span class="text-orange-500">@item.Category</span></h3>
-                    <p class="text-xs font-semibold text-gray-600 mb-2">@item.Name</p>
-
-                    <div class="text-yellow-400 text-xs mb-3">
-                        ★★★★★ <span class="text-gray-400">(@item.ReviewCount)</span>
-                    </div>
-
-                    <div class="flex items-center justify-between w-full mt-auto">
-                        <span class="font-extrabold text-gray-800">₱@item.Price.ToString("N2")</span>
-                        <button type="button" @onclick="() => AddToCart(item)"
-                                class="px-4 py-1.5 bg-orange-500 text-white text-xs rounded-full font-semibold hover:bg-orange-600 transition">
-                            @(justAddedId == item.Id ? "Added ✓" : "Add to Cart")
-                        </button>
-                    </div>
-                </div>
+                <button type="button" @onclick="() => category = c"
+                        class="@ChipClass(category == c)">@c</button>
             }
         </div>
+
+        @if (VisibleItems.Count == 0)
+        {
+            <div class="text-center py-12 bg-white rounded-3xl shadow-sm border border-gray-100">
+                <p class="text-gray-500 font-semibold mb-4">No dishes match your search.</p>
+                <button type="button" @onclick="ClearFilters"
+                        class="px-6 py-2 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 transition">Clear filters</button>
+            </div>
+        }
+        else
+        {
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach (var item in VisibleItems)
+                {
+                    <MenuItemCard Item="item" Added="justAddedId == item.Id" OnAdd="AddToCart" />
+                }
+            </div>
+        }
     </div>
 </div>
 
 @code {
+    // Lets other pages link here with a pre-filled search, e.g. /place-order?search=Lasagna
+    [Parameter, SupplyParameterFromQuery(Name = "search")]
+    public string? SearchQuery { get; set; }
+
+    private string searchTerm = "";
+    private string? category;
     private int? justAddedId;
+
+    private IReadOnlyList<MenuItem> VisibleItems => Menu.Search(searchTerm, category);
+
+    protected override void OnParametersSet() => searchTerm = SearchQuery ?? "";
 
     private async Task AddToCart(MenuItem item)
     {
@@ -66,18 +77,15 @@
         justAddedId = null;
     }
 
-    List<MenuItem> MenuItems = new List<MenuItem>
+    private void ClearFilters()
     {
-        // Filipino Foods
-        new MenuItem { Id = 1, Name = "Pork Sisig", Category = "Filipino", Price = 250, Rating = 5.0, ReviewCount = 340, ImageUrl = "images/sisig.png" },
-        new MenuItem { Id = 2, Name = "Beef Kaldereta", Category = "Filipino", Price = 320, Rating = 4.8, ReviewCount = 210, ImageUrl = "images/kaldereta.png" },
-        new MenuItem { Id = 3, Name = "Halo-Halo", Category = "Dessert", Price = 150, Rating = 4.9, ReviewCount = 500, ImageUrl = "images/halohalo.png" },
-        new MenuItem { Id = 4, Name = "Chicken Inasal", Category = "Filipino", Price = 220, Rating = 4.7, ReviewCount = 180, ImageUrl = "images/cinasal.png" },
-        new MenuItem { Id = 5, Name = "Pork Adobo", Category = "Filipino", Price = 200, Rating = 4.6, ReviewCount = 250, ImageUrl = "images/adobo.png" },
+        searchTerm = "";
+        category = null;
+    }
 
-        // Italian Foods
-        new MenuItem { Id = 6, Name = "Classic Lasagna", Category = "Italian", Price = 350, Rating = 4.9, ReviewCount = 150, ImageUrl = "images/lasagna.png" },
-        new MenuItem { Id = 7, Name = "Spaghetti Carbonara", Category = "Italian", Price = 300, Rating = 4.8, ReviewCount = 220, ImageUrl = "images/food2.png" },
-        new MenuItem { Id = 8, Name = "Margherita Pizza", Category = "Italian", Price = 450, Rating = 4.7, ReviewCount = 310, ImageUrl = "images/pizza.png" }
-    };
+    private static string ChipClass(bool active) =>
+        "px-4 py-1.5 rounded-full text-xs font-semibold border transition " +
+        (active
+            ? "bg-orange-500 border-orange-500 text-white"
+            : "bg-white border-gray-200 text-gray-600 hover:border-orange-500 hover:text-orange-500");
 }
