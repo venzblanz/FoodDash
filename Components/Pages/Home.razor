@@ -2,164 +2,272 @@
 
 <PageTitle>FoodDash | Quick and Tasty Food Delivery</PageTitle>
 
-<div class="min-h-screen bg-[#FAFAF8]">
+<style>
+    @@keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-12px); }
+    }
+    @@keyframes shimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+    }
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @@keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.92); }
+        to   { opacity: 1; transform: scale(1); }
+    }
+    @@keyframes pulse-ring {
+        0%   { transform: scale(1);   opacity: 0.6; }
+        100% { transform: scale(1.5); opacity: 0; }
+    }
 
-    <!-- NAV BAR -->
-    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2">
-                <span class="w-8 h-8 rounded-xl bg-orange-500 flex items-center justify-center shadow-md">
-                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7H1v-2h15.03v2zm0-4H1v-2h15.03v2z"/>
-                    </svg>
-                </span>
-                <span class="font-extrabold text-gray-900 text-lg tracking-tight">Food<span class="text-orange-500">Dash</span></span>
-            </a>
-            <div class="flex items-center gap-3">
-                <a href="/place-order" class="text-sm font-semibold text-gray-600 hover:text-orange-500 transition px-3 py-2">Menu</a>
-                <a href="/track-order" class="text-sm font-semibold text-gray-600 hover:text-orange-500 transition px-3 py-2">Track Order</a>
-                <a href="/cart" class="ml-2 px-5 py-2 bg-orange-500 text-white rounded-full text-sm font-bold shadow hover:bg-orange-600 transition">Cart</a>
-            </div>
-        </div>
-    </nav>
+    .animate-float        { animation: float 4s ease-in-out infinite; }
+    .animate-fade-up      { animation: fadeUp 0.7s ease both; }
+    .animate-fade-up-d1   { animation: fadeUp 0.7s 0.15s ease both; }
+    .animate-fade-up-d2   { animation: fadeUp 0.7s 0.30s ease both; }
+    .animate-fade-up-d3   { animation: fadeUp 0.7s 0.45s ease both; }
+    .animate-scale-in     { animation: scaleIn 0.6s 0.1s ease both; }
+    .shimmer-text {
+        background: linear-gradient(90deg, #fb923c, #f97316, #fdba74, #f97316, #fb923c);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 4s linear infinite;
+    }
+    .glow-orange {
+        box-shadow: 0 0 40px 0 rgba(249,115,22,0.35);
+    }
+    .pulse-ring::before {
+        content: '';
+        position: absolute;
+        inset: -8px;
+        border-radius: 50%;
+        border: 2px solid rgba(249,115,22,0.4);
+        animation: pulse-ring 2s ease-out infinite;
+    }
+    .card-hover {
+        transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease;
+    }
+    .card-hover:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+    }
+    .btn-primary {
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        transition: all 0.25s ease;
+        box-shadow: 0 8px 24px rgba(249,115,22,0.4);
+    }
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(249,115,22,0.55);
+    }
+    .btn-primary:active {
+        transform: translateY(0);
+    }
+    .btn-ghost {
+        transition: all 0.25s ease;
+        border: 1.5px solid rgba(255,255,255,0.15);
+    }
+    .btn-ghost:hover {
+        border-color: #f97316;
+        color: #f97316;
+        background: rgba(249,115,22,0.08);
+    }
+    .feature-card {
+        background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+        border: 1px solid rgba(255,255,255,0.07);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(12px);
+    }
+    .feature-card:hover {
+        border-color: rgba(249,115,22,0.3);
+        background: linear-gradient(145deg, rgba(249,115,22,0.06), rgba(249,115,22,0.02));
+        transform: translateY(-3px);
+    }
+    .dish-card {
+        background: linear-gradient(145deg, #1c1c1e, #161618);
+        border: 1px solid rgba(255,255,255,0.07);
+        transition: all 0.35s cubic-bezier(.34,1.2,.64,1);
+    }
+    .dish-card:hover {
+        border-color: rgba(249,115,22,0.4);
+        transform: translateY(-8px);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(249,115,22,0.2);
+    }
+    .dish-card:hover .dish-img {
+        transform: scale(1.08);
+    }
+    .dish-img {
+        transition: transform 0.5s cubic-bezier(.34,1.2,.64,1);
+    }
+    .badge {
+        background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(234,88,12,0.08));
+        border: 1px solid rgba(249,115,22,0.25);
+    }
+</style>
 
-    <!-- HERO -->
-    <section class="max-w-7xl mx-auto px-8 pt-20 pb-24 flex flex-col md:flex-row items-center gap-12">
-        <div class="md:w-1/2 z-10">
-            <span class="inline-block mb-4 px-4 py-1.5 bg-orange-50 border border-orange-200 text-orange-600 text-xs font-bold rounded-full tracking-wide uppercase">
-                🚀 30-Min Delivery Guarantee
-            </span>
-            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight text-gray-900 mb-6">
-                Quick &amp; Tasty<br />
-                Food, Delivered<br />
-                <span class="text-orange-500">in a Dash.</span>
-            </h1>
-            <p class="text-gray-500 text-lg mb-10 leading-relaxed max-w-md">
-                Fresh Filipino favorites and Italian classics — brought straight to your door, hot and on time.
-            </p>
-            <div class="flex gap-4">
-                <a href="/place-order"
-                   class="px-8 py-3.5 bg-orange-500 text-white rounded-full font-bold shadow-lg shadow-orange-200 hover:bg-orange-600 transition text-sm">
-                    Order Now
-                </a>
-                <a href="/track-order"
-                   class="px-8 py-3.5 border-2 border-gray-200 text-gray-700 rounded-full font-bold hover:border-orange-500 hover:text-orange-500 transition text-sm">
-                    Track Order
-                </a>
-            </div>
+<div class="min-h-screen bg-[#0e0e10] text-white">
+
+    <!-- ── HERO ─────────────────────────────────────────── -->
+    <section class="relative overflow-hidden">
+
+        <!-- Background glows -->
+        <div class="pointer-events-none absolute inset-0">
+            <div class="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full bg-orange-500/10 blur-[120px]"></div>
+            <div class="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-orange-700/8 blur-[100px]"></div>
         </div>
-        <div class="md:w-1/2 flex justify-center relative">
-            <div class="w-80 h-80 md:w-[420px] md:h-[420px] rounded-full bg-gradient-to-br from-orange-100 to-orange-50 shadow-2xl shadow-orange-100 overflow-hidden border-4 border-white">
-                <img src="images/food2.png" alt="Featured dish" class="w-full h-full object-cover" />
-            </div>
-            <!-- Floating badge -->
-            <div class="absolute bottom-6 left-0 md:-left-4 bg-white rounded-2xl shadow-xl px-5 py-3 border border-gray-100 flex items-center gap-3">
-                <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
-                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
+
+        <div class="relative max-w-7xl mx-auto px-8 pt-20 pb-28 flex flex-col md:flex-row items-center gap-16">
+
+            <!-- Left copy -->
+            <div class="md:w-1/2">
+                <div class="animate-fade-up">
+                    <span class="badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold text-orange-400 mb-6 tracking-wide uppercase">
+                        <span class="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse"></span>
+                        30-Min Delivery Guarantee
+                    </span>
                 </div>
-                <div>
-                    <p class="text-xs text-gray-400 font-medium">Delivered fresh</p>
-                    <p class="text-sm font-bold text-gray-800">100% Guaranteed</p>
+                <h1 class="animate-fade-up-d1 text-5xl md:text-6xl xl:text-7xl font-black leading-[1.08] tracking-tight mb-6">
+                    Quick &amp; Tasty<br />
+                    Food, Delivered<br />
+                    <span class="shimmer-text">in a Dash.</span>
+                </h1>
+                <p class="animate-fade-up-d2 text-gray-400 text-lg leading-relaxed max-w-md mb-10">
+                    Fresh Filipino favorites and Italian classics — brought straight to your door, hot and on time. Always.
+                </p>
+                <div class="animate-fade-up-d3 flex items-center gap-4">
+                    <a href="/place-order" class="btn-primary px-8 py-3.5 rounded-full font-bold text-sm text-white inline-block">
+                        Order Now
+                    </a>
+                    <a href="/track-order" class="btn-ghost px-8 py-3.5 rounded-full font-bold text-sm text-gray-300 inline-block">
+                        Track Order
+                    </a>
                 </div>
             </div>
+
+            <!-- Right image -->
+            <div class="md:w-1/2 flex justify-center animate-scale-in">
+                <div class="relative pulse-ring">
+                    <div class="w-72 h-72 md:w-[400px] md:h-[400px] rounded-full overflow-hidden glow-orange border border-orange-500/20 animate-float">
+                        <img src="images/food2.png" alt="Featured dish" class="w-full h-full object-cover" />
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <!-- FEATURES -->
-    <section class="max-w-7xl mx-auto px-8 mb-20">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- ── FEATURES ──────────────────────────────────────── -->
+    <section class="max-w-7xl mx-auto px-8 pb-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-5 hover:shadow-md transition group">
-                <div class="w-14 h-14 rounded-xl bg-orange-50 flex items-center justify-center shrink-0 group-hover:bg-orange-100 transition">
-                    <svg class="w-7 h-7 text-orange-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            <div class="feature-card rounded-2xl p-6 flex items-center gap-5">
+                <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
                     </svg>
                 </div>
                 <div>
-                    <h3 class="font-bold text-gray-800 text-sm mb-0.5">Fast Delivery</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">Delivered to your door within 30 minutes, every time.</p>
+                    <h3 class="font-bold text-white text-sm mb-1">Fast Delivery</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">Delivered within 30 minutes, guaranteed.</p>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-5 hover:shadow-md transition group">
-                <div class="w-14 h-14 rounded-xl bg-green-50 flex items-center justify-center shrink-0 group-hover:bg-green-100 transition">
-                    <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 0c0 0-4 4-4 8s4 8 4 8m0-16c0 0 4 4 4 8s-4 8-4 8M2 12h20"/>
+            <div class="feature-card rounded-2xl p-6 flex items-center gap-5">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 3l14 9-14 9V3z"/>
+                        <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.3"/>
                     </svg>
                 </div>
                 <div>
-                    <h3 class="font-bold text-gray-800 text-sm mb-0.5">Always Fresh</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">Every dish prepared fresh — no reheating, ever.</p>
+                    <h3 class="font-bold text-white text-sm mb-1">Always Fresh</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">Every dish prepared fresh — no reheating, ever.</p>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-5 hover:shadow-md transition group">
-                <div class="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition">
-                    <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+            <div class="feature-card rounded-2xl p-6 flex items-center gap-5">
+                <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6 text-sky-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 3v4M8 3v4"/>
                     </svg>
                 </div>
                 <div>
-                    <h3 class="font-bold text-gray-800 text-sm mb-0.5">Free Delivery</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">No hidden fees. Every order ships absolutely free.</p>
+                    <h3 class="font-bold text-white text-sm mb-1">Free Delivery</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">No hidden fees. Every order ships free.</p>
                 </div>
             </div>
 
         </div>
     </section>
 
-    <!-- BEST DISHES -->
-    <section class="max-w-7xl mx-auto px-8 pb-24">
+    <!-- ── BEST DISHES ───────────────────────────────────── -->
+    <section class="max-w-7xl mx-auto px-8 pb-28">
         <div class="flex items-end justify-between mb-12">
             <div>
-                <p class="text-xs font-bold text-orange-500 uppercase tracking-widest mb-2">Staff Picks</p>
-                <h2 class="text-3xl font-extrabold text-gray-900">Our <span class="text-orange-500">Best Delivered</span> Dishes</h2>
+                <p class="text-xs font-bold text-orange-500 uppercase tracking-[0.2em] mb-3">Staff Picks</p>
+                <h2 class="text-3xl md:text-4xl font-black text-white leading-tight">
+                    Our <span class="shimmer-text">Best Delivered</span><br/>Dishes
+                </h2>
             </div>
-            <a href="/place-order" class="text-sm font-semibold text-gray-400 hover:text-orange-500 transition">View full menu →</a>
+            <a href="/place-order" class="text-sm font-semibold text-gray-500 hover:text-orange-400 transition flex items-center gap-1.5">
+                Full menu
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
 
-            <div class="group bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
-                <div class="h-52 bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center overflow-hidden">
-                    <img src="images/lasagna.png" alt="Lasagna" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <div class="dish-card card-hover rounded-3xl overflow-hidden flex flex-col">
+                <div class="h-52 overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                    <img src="images/lasagna.png" alt="Lasagna" class="dish-img w-full h-full object-cover" />
                 </div>
-                <div class="p-5 flex flex-col gap-3 flex-1">
-                    <h4 class="font-bold text-gray-800">Lasagna</h4>
-                    <p class="text-xs text-gray-400 leading-relaxed flex-1">Rich layers of pasta, meat sauce, and béchamel — baked to golden perfection.</p>
-                    <a href="/place-order?search=Lasagna"
-                       class="w-full text-center px-5 py-2.5 bg-orange-500 text-white rounded-full text-xs font-bold hover:bg-orange-600 transition shadow-sm shadow-orange-200">
+                <div class="p-6 flex flex-col gap-4 flex-1">
+                    <div>
+                        <h4 class="font-bold text-white text-base mb-1">Lasagna</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">Rich layers of pasta, meat sauce, and béchamel — baked to golden perfection.</p>
+                    </div>
+                    <a href="/place-order?search=Lasagna" class="btn-primary mt-auto block text-center py-2.5 rounded-full text-xs font-bold text-white">
                         Order Now
                     </a>
                 </div>
             </div>
 
-            <div class="group bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
-                <div class="h-52 bg-gradient-to-br from-purple-50 to-pink-50 flex items-center justify-center overflow-hidden">
-                    <img src="images/halohalo.png" alt="Halo-Halo" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <div class="dish-card card-hover rounded-3xl overflow-hidden flex flex-col">
+                <div class="h-52 overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                    <img src="images/halohalo.png" alt="Halo-Halo" class="dish-img w-full h-full object-cover" />
                 </div>
-                <div class="p-5 flex flex-col gap-3 flex-1">
-                    <h4 class="font-bold text-gray-800">Halo-Halo</h4>
-                    <p class="text-xs text-gray-400 leading-relaxed flex-1">The iconic Filipino dessert — shaved ice, leche flan, ube, and fresh fruits.</p>
-                    <a href="/place-order?search=Halo-Halo"
-                       class="w-full text-center px-5 py-2.5 bg-orange-500 text-white rounded-full text-xs font-bold hover:bg-orange-600 transition shadow-sm shadow-orange-200">
+                <div class="p-6 flex flex-col gap-4 flex-1">
+                    <div>
+                        <h4 class="font-bold text-white text-base mb-1">Halo-Halo</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">The iconic Filipino dessert — shaved ice, leche flan, ube, and fresh fruits.</p>
+                    </div>
+                    <a href="/place-order?search=Halo-Halo" class="btn-primary mt-auto block text-center py-2.5 rounded-full text-xs font-bold text-white">
                         Order Now
                     </a>
                 </div>
             </div>
 
-            <div class="group bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col">
-                <div class="h-52 bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center overflow-hidden">
-                    <img src="images/sisig.png" alt="Sisig" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <div class="dish-card card-hover rounded-3xl overflow-hidden flex flex-col">
+                <div class="h-52 overflow-hidden relative">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                    <img src="images/sisig.png" alt="Sisig" class="dish-img w-full h-full object-cover" />
                 </div>
-                <div class="p-5 flex flex-col gap-3 flex-1">
-                    <h4 class="font-bold text-gray-800">Sisig</h4>
-                    <p class="text-xs text-gray-400 leading-relaxed flex-1">Sizzling Kapampangan classic — crispy pork, onions, and calamansi on a hot plate.</p>
-                    <a href="/place-order?search=Sisig"
-                       class="w-full text-center px-5 py-2.5 bg-orange-500 text-white rounded-full text-xs font-bold hover:bg-orange-600 transition shadow-sm shadow-orange-200">
+                <div class="p-6 flex flex-col gap-4 flex-1">
+                    <div>
+                        <h4 class="font-bold text-white text-base mb-1">Sisig</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">Sizzling Kapampangan classic — crispy pork, onions, and calamansi on a hot plate.</p>
+                    </div>
+                    <a href="/place-order?search=Sisig" class="btn-primary mt-auto block text-center py-2.5 rounded-full text-xs font-bold text-white">
                         Order Now
                     </a>
                 </div>
