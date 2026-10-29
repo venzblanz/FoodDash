@@ -398,6 +398,9 @@
   .mt-auto {
     margin-top: auto;
   }
+  .mt-px {
+    margin-top: 1px;
+  }
   .mr-3 {
     margin-right: calc(var(--spacing) * 3);
   }
@@ -457,6 +460,9 @@
   }
   .hidden {
     display: none;
+  }
+  .inline {
+    display: inline;
   }
   .inline-block {
     display: inline-block;
@@ -1182,6 +1188,9 @@
   }
   .pb-4 {
     padding-bottom: calc(var(--spacing) * 4);
+  }
+  .pb-6 {
+    padding-bottom: calc(var(--spacing) * 6);
   }
   .pb-20 {
     padding-bottom: calc(var(--spacing) * 20);
