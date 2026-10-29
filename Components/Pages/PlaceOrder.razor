@@ -5,155 +5,223 @@
 <PageTitle>Menu | FoodDash</PageTitle>
 
 <style>
-    @@keyframes fadeUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
     @@keyframes shimmer {
         0%   { background-position: -200% center; }
         100% { background-position:  200% center; }
     }
-    .animate-fade-up   { animation: fadeUp 0.55s ease both; }
-    .animate-fade-up-d1 { animation: fadeUp 0.55s 0.1s ease both; }
-    .animate-fade-up-d2 { animation: fadeUp 0.55s 0.2s ease both; }
-    .shimmer-text {
-        background: linear-gradient(90deg, #fb923c, #f97316, #fdba74, #f97316, #fb923c);
+
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .st {
+        background: linear-gradient(90deg, #fb923c, #f97316, #fde68a, #f97316, #fb923c);
         background-size: 200% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        animation: shimmer 4s linear infinite;
+        background-clip: text;
+        animation: shimmer 3.5s linear infinite;
     }
+
+    .section-label {
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #7c6450;
+    }
+
+    /* Back link */
+    .back-link {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #4a3a2e;
+        text-decoration: none;
+        transition: color 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .back-link:hover { color: #fb923c; }
+
+    /* Primary button */
     .btn-primary {
-        background: linear-gradient(135deg, #f97316, #ea580c);
-        transition: all 0.25s ease;
-        box-shadow: 0 8px 20px rgba(249,115,22,0.35);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 0.65rem 1.4rem;
+        border-radius: 0.875rem;
+        background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
+        box-shadow: 0 6px 24px rgba(249,115,22,0.45);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.88rem;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
     }
+
     .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 28px rgba(249,115,22,0.5);
+        box-shadow: 0 12px 36px rgba(249,115,22,0.6);
     }
-    .search-bar {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.09);
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    /* Search input */
+    .search-wrap {
+        position: relative;
+        flex: 1;
     }
-    .search-bar:focus {
+
+    .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7c6450;
+        pointer-events: none;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.8rem;
+        border-radius: 0.875rem;
+        background: rgba(255,180,60,0.04);
+        border: 1px solid rgba(255,180,60,0.14);
+        color: #f5ede3;
+        font-size: 0.9rem;
         outline: none;
-        border-color: rgba(249,115,22,0.5);
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-input::placeholder { color: #4a3a2e; }
+
+    .search-input:focus {
+        border-color: rgba(249,115,22,0.6);
         box-shadow: 0 0 0 3px rgba(249,115,22,0.12);
     }
+
+    /* Category chip */
     .chip-active {
-        background: linear-gradient(135deg, #f97316, #ea580c);
-        border-color: transparent;
-        color: white;
-        box-shadow: 0 4px 14px rgba(249,115,22,0.35);
+        padding: 0.4rem 1rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.15s ease;
+        box-shadow: 0 4px 14px rgba(249,115,22,0.40);
     }
+
+    .chip-active:hover { transform: translateY(-1px); }
+
     .chip-idle {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.09);
-        color: #9ca3af;
-        transition: all 0.2s ease;
+        padding: 0.4rem 1rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        background: rgba(255,180,60,0.06);
+        border: 1px solid rgba(255,180,60,0.14);
+        color: #7c6450;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s, color 0.2s;
     }
+
     .chip-idle:hover {
-        border-color: rgba(249,115,22,0.4);
-        color: #fb923c;
-        background: rgba(249,115,22,0.07);
-    }
-    .menu-card {
-        background: linear-gradient(145deg, #1c1c1e, #161618);
-        border: 1px solid rgba(255,255,255,0.07);
-        transition: all 0.35s cubic-bezier(.34,1.2,.64,1);
-    }
-    .menu-card:hover {
+        background: rgba(249,115,22,0.09);
         border-color: rgba(249,115,22,0.35);
-        transform: translateY(-6px);
-        box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(249,115,22,0.15);
+        color: #fb923c;
     }
-    .menu-card:hover .menu-img {
-        transform: scale(1.07);
-    }
-    .menu-img {
-        transition: transform 0.45s cubic-bezier(.34,1.2,.64,1);
+
+    /* Empty state card */
+    .empty-card {
+        background: linear-gradient(160deg, rgba(255,180,60,0.06) 0%, rgba(255,255,255,0.02) 100%);
+        border: 1px solid rgba(255,180,60,0.12);
+        box-shadow: inset 0 1px 0 rgba(255,200,120,0.07), 0 8px 32px rgba(0,0,0,0.45);
+        border-radius: 1.5rem;
+        padding: 3rem 2rem;
+        text-align: center;
     }
 </style>
 
-<div class="min-h-screen bg-[#0e0e10] text-white">
+<div class="min-h-screen w-full" style="background: radial-gradient(ellipse 140% 65% at 50% -5%, rgba(249,115,22,0.28) 0%, rgba(180,60,0,0.10) 38%, transparent 62%), linear-gradient(170deg, #1c0f06 0%, #100c08 45%, #0a080d 100%);">
+    <div class="max-w-6xl mx-auto px-6 pt-10 pb-24">
 
-    <!-- Background glow -->
-    <div class="pointer-events-none fixed inset-0 overflow-hidden">
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-orange-500/8 blur-[130px]"></div>
-        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-orange-700/6 blur-[110px]"></div>
-    </div>
+        <!-- Back link -->
+        <a href="/" class="back-link mb-6 block">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Home
+        </a>
 
-    <div class="relative max-w-7xl mx-auto px-8 pt-10 pb-28">
-
-        <!-- Header -->
-        <div class="flex flex-wrap items-start justify-between gap-6 mb-10 animate-fade-up">
+        <!-- Header row -->
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8" style="animation: fadeUp 0.6s ease both;">
             <div>
-                <a href="/" class="inline-flex items-center gap-1.5 text-gray-600 hover:text-orange-400 text-xs font-semibold mb-4 transition">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                    Back to Home
-                </a>
-                <h1 class="text-4xl font-black text-white leading-tight">
-                    Our <span class="shimmer-text">Regular</span> Menu
+                <p class="section-label mb-2">What's Good Today</p>
+                <h1 style="font-size:2.5rem; font-weight:900; color:#f5ede3; line-height:1.1;">
+                    Our <span class="st">Regular Menu</span>
                 </h1>
-                <p class="text-sm text-gray-500 mt-2">Filipino Favorites &amp; Italian Classics — always fresh.</p>
+                <p class="mt-2" style="color:#8a7060;">Pick your favourites and we'll have them at your door.</p>
             </div>
-            <a href="/cart"
-               class="btn-primary flex items-center gap-2.5 px-6 py-3 rounded-full font-bold text-sm text-white shrink-0">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+
+            <a href="/cart" class="btn-primary" style="align-self: flex-end;">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 5.3A1 1 0 006 20h12M17 20a1 1 0 100 2 1 1 0 000-2zM9 20a1 1 0 100 2 1 1 0 000-2z"/>
                 </svg>
                 Cart (@Cart.Count)
             </a>
         </div>
 
         <!-- Search + Filters -->
-        <div class="flex flex-wrap items-center gap-3 mb-10 animate-fade-up-d1">
-            <div class="relative">
-                <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
+        <div class="flex flex-col sm:flex-row gap-4 mb-6" style="animation: fadeUp 0.65s ease 0.05s both;">
+            <div class="search-wrap">
+                <svg class="search-icon" width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
                 </svg>
-                <input type="search" @bind="searchTerm" @bind:event="oninput" placeholder="Search dishes…"
-                       aria-label="Search dishes"
-                       class="search-bar pl-11 pr-5 py-2.5 w-64 rounded-full text-sm text-white placeholder-gray-600" />
-            </div>
-
-            <div class="flex flex-wrap items-center gap-2">
-                <button type="button" @onclick="() => category = null" class="@ChipClass(category is null)">All</button>
-                @foreach (var c in Menu.GetCategories())
-                {
-                    <button type="button" @onclick="() => category = c" class="@ChipClass(category == c)">@c</button>
-                }
+                <input class="search-input"
+                       type="text"
+                       placeholder="Search dishes…"
+                       value="@searchTerm"
+                       @oninput="e => { searchTerm = e.Value?.ToString() ?? string.Empty; }" />
             </div>
         </div>
 
-        <!-- Grid -->
-        @if (VisibleItems.Count == 0)
-        {
-            <div class="text-center py-24 rounded-3xl border border-white/5 bg-white/[0.02]">
-                <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/08 flex items-center justify-center mx-auto mb-5">
-                    <svg class="w-7 h-7 text-gray-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
-                    </svg>
-                </div>
-                <p class="text-white font-bold mb-1">No dishes found</p>
-                <p class="text-xs text-gray-600 mb-7">Try a different keyword or clear your filters.</p>
-                <button type="button" @onclick="ClearFilters" class="btn-primary px-7 py-2.5 rounded-full text-sm font-bold text-white inline-block">
-                    Clear Filters
+        <!-- Category chips -->
+        <div class="flex flex-wrap gap-2 mb-8" style="animation: fadeUp 0.65s ease 0.1s both;">
+            @foreach (var cat in new[] { "All", "Mains", "Desserts", "Drinks", "Sides" })
+            {
+                <button class="@ChipClass(cat)" @onclick="() => category = cat == category ? string.Empty : cat">
+                    @cat
                 </button>
+            }
+        </div>
+
+        <!-- Results -->
+        @if (!VisibleItems.Any())
+        {
+            <div class="empty-card" style="animation: fadeUp 0.5s ease both;">
+                <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="rgba(255,180,60,0.30)" stroke-width="1.4" class="mx-auto mb-4">
+                    <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
+                </svg>
+                <p style="font-size:1.1rem; font-weight:800; color:#f5ede3;" class="mb-2">No dishes found</p>
+                <p style="color:#8a7060;" class="text-sm mb-5">Try a different search term or category.</p>
+                <button class="btn-primary" @onclick="ClearFilters">Clear Filters</button>
             </div>
         }
         else
         {
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-up-d2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" style="animation: fadeUp 0.65s ease 0.15s both;">
                 @foreach (var item in VisibleItems)
                 {
-                    <MenuItemCard Item="item" Added="justAddedId == item.Id" OnAdd="AddToCart" />
+                    <MenuItemCard Item="item"
+                                  OnAddToCart="() => AddToCart(item)"
+                                  JustAdded="justAddedId == item.Id" />
                 }
             </div>
         }
@@ -162,16 +230,23 @@
 </div>
 
 @code {
-    [Parameter, SupplyParameterFromQuery(Name = "search")]
-    public string? SearchQuery { get; set; }
+    [Parameter][SupplyParameterFromQuery] public string? SearchQuery { get; set; }
 
-    private string searchTerm = "";
-    private string? category;
-    private int? justAddedId;
+    private string searchTerm = string.Empty;
+    private string category   = string.Empty;
+    private int?   justAddedId;
 
-    private IReadOnlyList<MenuItem> VisibleItems => Menu.Search(searchTerm, category);
+    private IEnumerable<MenuItem> VisibleItems => Menu.Items
+        .Where(i => string.IsNullOrWhiteSpace(searchTerm) ||
+                    i.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    i.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+        .Where(i => string.IsNullOrWhiteSpace(category) || i.Category == category);
 
-    protected override void OnParametersSet() => searchTerm = SearchQuery ?? "";
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrWhiteSpace(SearchQuery))
+            searchTerm = SearchQuery;
+    }
 
     private async Task AddToCart(MenuItem item)
     {
@@ -184,12 +259,15 @@
 
     private void ClearFilters()
     {
-        searchTerm = "";
-        category = null;
+        searchTerm = string.Empty;
+        category   = string.Empty;
     }
 
-    private static string ChipClass(bool active) =>
-        active
-            ? "chip-active px-4 py-2 rounded-full text-xs font-bold border border-transparent"
-            : "chip-idle px-4 py-2 rounded-full text-xs font-bold";
+    private string ChipClass(string cat)
+    {
+        bool active = cat == "All"
+            ? string.IsNullOrWhiteSpace(category)
+            : category == cat;
+        return active ? "chip-active" : "chip-idle";
+    }
 }

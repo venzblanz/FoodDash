@@ -1,275 +1,416 @@
 ﻿@page "/"
-
 <PageTitle>FoodDash | Quick and Tasty Food Delivery</PageTitle>
 
 <style>
-    @@keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-12px); }
+    /* Shimmer */
+    .st {
+        background: linear-gradient(90deg, #fb923c, #f97316, #fde68a, #f97316, #fb923c);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmer 3.5s linear infinite;
     }
+
     @@keyframes shimmer {
-        0% { background-position: -200% center; }
-        100% { background-position: 200% center; }
+        0%   { background-position: -200% center; }
+        100% { background-position:  200% center; }
     }
+
     @@keyframes fadeUp {
         from { opacity: 0; transform: translateY(24px); }
         to   { opacity: 1; transform: translateY(0); }
     }
-    @@keyframes scaleIn {
-        from { opacity: 0; transform: scale(0.92); }
-        to   { opacity: 1; transform: scale(1); }
-    }
-    @@keyframes pulse-ring {
-        0%   { transform: scale(1);   opacity: 0.6; }
-        100% { transform: scale(1.5); opacity: 0; }
+
+    @@keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-12px); }
     }
 
-    .animate-float        { animation: float 4s ease-in-out infinite; }
-    .animate-fade-up      { animation: fadeUp 0.7s ease both; }
-    .animate-fade-up-d1   { animation: fadeUp 0.7s 0.15s ease both; }
-    .animate-fade-up-d2   { animation: fadeUp 0.7s 0.30s ease both; }
-    .animate-fade-up-d3   { animation: fadeUp 0.7s 0.45s ease both; }
-    .animate-scale-in     { animation: scaleIn 0.6s 0.1s ease both; }
-    .shimmer-text {
-        background: linear-gradient(90deg, #fb923c, #f97316, #fdba74, #f97316, #fb923c);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: shimmer 4s linear infinite;
+    @@keyframes ripple {
+        0%   { transform: scale(1);   opacity: 0.7; }
+        100% { transform: scale(2.8); opacity: 0; }
     }
-    .glow-orange {
-        box-shadow: 0 0 40px 0 rgba(249,115,22,0.35);
+
+    @@keyframes pulse-ring {
+        0%   { transform: scale(0.9); opacity: 0.6; }
+        100% { transform: scale(1.6); opacity: 0; }
     }
-    .pulse-ring::before {
-        content: '';
-        position: absolute;
-        inset: -8px;
+
+    /* Hero */
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid rgba(249,115,22,0.30);
+        background: rgba(249,115,22,0.10);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: #fb923c;
+        animation: fadeUp 0.6s ease both;
+    }
+
+    .badge-dot {
+        width: 8px; height: 8px;
         border-radius: 50%;
-        border: 2px solid rgba(249,115,22,0.4);
-        animation: pulse-ring 2s ease-out infinite;
+        background: #f97316;
+        box-shadow: 0 0 6px rgba(249,115,22,0.8);
+        animation: pulse-ring 1.4s ease-out infinite;
     }
-    .card-hover {
-        transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease;
+
+    .hero-heading {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #f5ede3;
+        line-height: 1.1;
+        animation: fadeUp 0.7s ease 0.1s both;
     }
-    .card-hover:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+
+    .hero-subtitle {
+        color: #8a7060;
+        animation: fadeUp 0.7s ease 0.2s both;
     }
+
+    .hero-btns {
+        animation: fadeUp 0.7s ease 0.3s both;
+    }
+
+    /* Primary button */
     .btn-primary {
-        background: linear-gradient(135deg, #f97316, #ea580c);
-        transition: all 0.25s ease;
-        box-shadow: 0 8px 24px rgba(249,115,22,0.4);
+        display: inline-block;
+        padding: 0.75rem 1.75rem;
+        border-radius: 0.875rem;
+        background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
+        box-shadow: 0 6px 24px rgba(249,115,22,0.45);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        color: #fff;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
     }
+
     .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 32px rgba(249,115,22,0.55);
+        box-shadow: 0 12px 36px rgba(249,115,22,0.6);
     }
-    .btn-primary:active {
-        transform: translateY(0);
-    }
+
+    /* Ghost button */
     .btn-ghost {
-        transition: all 0.25s ease;
-        border: 1.5px solid rgba(255,255,255,0.15);
+        display: inline-block;
+        padding: 0.75rem 1.75rem;
+        border-radius: 0.875rem;
+        border: 1.5px solid rgba(249,115,22,0.35);
+        color: #fb923c;
+        font-weight: 700;
+        transition: background 0.2s, border-color 0.2s;
+        cursor: pointer;
+        text-decoration: none;
+        background: transparent;
     }
+
     .btn-ghost:hover {
+        background: rgba(249,115,22,0.09);
         border-color: #f97316;
-        color: #f97316;
-        background: rgba(249,115,22,0.08);
     }
+
+    /* Food image ring */
+    .food-ring-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeUp 0.8s ease 0.2s both;
+    }
+
+    .food-ring {
+        position: relative;
+        width: 280px; height: 280px;
+        border-radius: 50%;
+        overflow: hidden;
+        box-shadow: 0 0 60px rgba(249,115,22,0.45), 0 0 120px rgba(249,115,22,0.20);
+        border: 2px solid rgba(249,115,22,0.30);
+    }
+
+    .food-ring img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        animation: float 4s ease-in-out infinite;
+    }
+
+    .food-ring::before,
+    .food-ring::after {
+        content: '';
+        position: absolute;
+        inset: -20px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(249,115,22,0.25);
+        animation: ripple 2.8s ease-out infinite;
+        pointer-events: none;
+    }
+
+    .food-ring::after {
+        inset: -45px;
+        animation-delay: 1.4s;
+    }
+
+    /* Feature cards */
     .feature-card {
-        background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-        border: 1px solid rgba(255,255,255,0.07);
-        transition: all 0.3s ease;
-        backdrop-filter: blur(12px);
+        background: linear-gradient(160deg, rgba(255,180,60,0.06) 0%, rgba(255,255,255,0.02) 100%);
+        border: 1px solid rgba(255,180,60,0.12);
+        box-shadow: inset 0 1px 0 rgba(255,200,120,0.07), 0 8px 32px rgba(0,0,0,0.45);
+        border-radius: 1.5rem;
+        padding: 1.5rem;
+        animation: fadeUp 0.7s ease both;
     }
-    .feature-card:hover {
-        border-color: rgba(249,115,22,0.3);
-        background: linear-gradient(145deg, rgba(249,115,22,0.06), rgba(249,115,22,0.02));
-        transform: translateY(-3px);
+
+    .icon-box-orange {
+        width: 44px; height: 44px;
+        border-radius: 0.75rem;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(249,115,22,0.18);
+        flex-shrink: 0;
     }
+
+    .icon-box-green {
+        width: 44px; height: 44px;
+        border-radius: 0.75rem;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(34,197,94,0.15);
+        flex-shrink: 0;
+    }
+
+    .icon-box-blue {
+        width: 44px; height: 44px;
+        border-radius: 0.75rem;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(99,179,237,0.15);
+        flex-shrink: 0;
+    }
+
+    /* Dish cards */
     .dish-card {
-        background: linear-gradient(145deg, #1c1c1e, #161618);
-        border: 1px solid rgba(255,255,255,0.07);
-        transition: all 0.35s cubic-bezier(.34,1.2,.64,1);
+        background: linear-gradient(160deg, rgba(255,180,60,0.06) 0%, rgba(255,255,255,0.02) 100%);
+        border: 1px solid rgba(255,180,60,0.12);
+        box-shadow: inset 0 1px 0 rgba(255,200,120,0.07), 0 8px 32px rgba(0,0,0,0.45);
+        border-radius: 1.5rem;
+        overflow: hidden;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
+
     .dish-card:hover {
-        border-color: rgba(249,115,22,0.4);
-        transform: translateY(-8px);
-        box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(249,115,22,0.2);
+        transform: translateY(-4px);
+        box-shadow: inset 0 1px 0 rgba(255,200,120,0.10), 0 16px 48px rgba(0,0,0,0.55), 0 0 32px rgba(249,115,22,0.10);
     }
-    .dish-card:hover .dish-img {
-        transform: scale(1.08);
+
+    .dish-img-wrap {
+        position: relative;
+        height: 190px;
+        overflow: hidden;
     }
-    .dish-img {
-        transition: transform 0.5s cubic-bezier(.34,1.2,.64,1);
+
+    .dish-img-wrap img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
     }
-    .badge {
-        background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(234,88,12,0.08));
-        border: 1px solid rgba(249,115,22,0.25);
+
+    .dish-card:hover .dish-img-wrap img {
+        transform: scale(1.06);
     }
+
+    .dish-img-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(16,12,8,0.80) 0%, transparent 60%);
+    }
+
+    .dish-body {
+        padding: 1.25rem;
+    }
+
+    .dish-name {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #f5ede3;
+    }
+
+    .dish-desc {
+        font-size: 0.83rem;
+        color: #8a7060;
+        margin-top: 0.3rem;
+        line-height: 1.5;
+    }
+
+    /* Section label */
+    .section-label {
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #7c6450;
+    }
+
+    /* Full menu link */
+    .menu-link {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #fb923c;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .menu-link:hover { color: #f97316; }
 </style>
 
-<div class="min-h-screen bg-[#0e0e10] text-white">
+<div class="min-h-screen w-full" style="background: radial-gradient(ellipse 140% 65% at 50% -5%, rgba(249,115,22,0.28) 0%, rgba(180,60,0,0.10) 38%, transparent 62%), linear-gradient(170deg, #1c0f06 0%, #100c08 45%, #0a080d 100%);">
 
-    <!-- ── HERO ─────────────────────────────────────────── -->
-    <section class="relative overflow-hidden">
+    <!-- ─── HERO ─── -->
+    <section class="max-w-6xl mx-auto px-6 pt-20 pb-16 flex flex-col lg:flex-row items-center gap-12">
 
-        <!-- Background glows -->
-        <div class="pointer-events-none absolute inset-0">
-            <div class="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full bg-orange-500/10 blur-[120px]"></div>
-            <div class="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-orange-700/8 blur-[100px]"></div>
-        </div>
-
-        <div class="relative max-w-7xl mx-auto px-8 pt-20 pb-28 flex flex-col md:flex-row items-center gap-16">
-
-            <!-- Left copy -->
-            <div class="md:w-1/2">
-                <div class="animate-fade-up">
-                    <span class="badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold text-orange-400 mb-6 tracking-wide uppercase">
-                        <span class="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse"></span>
-                        30-Min Delivery Guarantee
-                    </span>
-                </div>
-                <h1 class="animate-fade-up-d1 text-5xl md:text-6xl xl:text-7xl font-black leading-[1.08] tracking-tight mb-6">
-                    Quick &amp; Tasty<br />
-                    Food, Delivered<br />
-                    <span class="shimmer-text">in a Dash.</span>
-                </h1>
-                <p class="animate-fade-up-d2 text-gray-400 text-lg leading-relaxed max-w-md mb-10">
-                    Fresh Filipino favorites and Italian classics — brought straight to your door, hot and on time. Always.
-                </p>
-                <div class="animate-fade-up-d3 flex items-center gap-4">
-                    <a href="/place-order" class="btn-primary px-8 py-3.5 rounded-full font-bold text-sm text-white inline-block">
-                        Order Now
-                    </a>
-                    <a href="/track-order" class="btn-ghost px-8 py-3.5 rounded-full font-bold text-sm text-gray-300 inline-block">
-                        Track Order
-                    </a>
-                </div>
-            </div>
-
-            <!-- Right image -->
-            <div class="md:w-1/2 flex justify-center animate-scale-in">
-                <div class="relative pulse-ring">
-                    <div class="w-72 h-72 md:w-[400px] md:h-[400px] rounded-full overflow-hidden glow-orange border border-orange-500/20 animate-float">
-                        <img src="images/food2.png" alt="Featured dish" class="w-full h-full object-cover" />
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ── FEATURES ──────────────────────────────────────── -->
-    <section class="max-w-7xl mx-auto px-8 pb-20">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-
-            <div class="feature-card rounded-2xl p-6 flex items-center gap-5">
-                <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0">
-                    <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10"/>
-                        <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="font-bold text-white text-sm mb-1">Fast Delivery</h3>
-                    <p class="text-xs text-gray-500 leading-relaxed">Delivered within 30 minutes, guaranteed.</p>
-                </div>
-            </div>
-
-            <div class="feature-card rounded-2xl p-6 flex items-center gap-5">
-                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
-                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 3l14 9-14 9V3z"/>
-                        <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.3"/>
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="font-bold text-white text-sm mb-1">Always Fresh</h3>
-                    <p class="text-xs text-gray-500 leading-relaxed">Every dish prepared fresh — no reheating, ever.</p>
-                </div>
-            </div>
-
-            <div class="feature-card rounded-2xl p-6 flex items-center gap-5">
-                <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center shrink-0">
-                    <svg class="w-6 h-6 text-sky-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 3v4M8 3v4"/>
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="font-bold text-white text-sm mb-1">Free Delivery</h3>
-                    <p class="text-xs text-gray-500 leading-relaxed">No hidden fees. Every order ships free.</p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ── BEST DISHES ───────────────────────────────────── -->
-    <section class="max-w-7xl mx-auto px-8 pb-28">
-        <div class="flex items-end justify-between mb-12">
+        <!-- Left: copy -->
+        <div class="flex-1 flex flex-col gap-6">
             <div>
-                <p class="text-xs font-bold text-orange-500 uppercase tracking-[0.2em] mb-3">Staff Picks</p>
-                <h2 class="text-3xl md:text-4xl font-black text-white leading-tight">
-                    Our <span class="shimmer-text">Best Delivered</span><br/>Dishes
+                <span class="hero-badge">
+                    <span class="badge-dot"></span>
+                    30-Min Delivery Guarantee
+                </span>
+            </div>
+
+            <h1 class="hero-heading">
+                Great Food,<br />
+                Delivered<br />
+                <span class="st">in a Dash.</span>
+            </h1>
+
+            <p class="hero-subtitle text-lg max-w-md">
+                Craving something delicious? We bring your favourite meals straight to your door — hot, fresh, and on time.
+            </p>
+
+            <div class="hero-btns flex flex-wrap gap-4">
+                <a href="/place-order" class="btn-primary">Order Now</a>
+                <a href="/track-order" class="btn-ghost">Track Order</a>
+            </div>
+        </div>
+
+        <!-- Right: food image -->
+        <div class="flex-1 flex justify-center">
+            <div class="food-ring-wrap">
+                <div class="food-ring">
+                    <img src="images/lasagna.png" alt="Featured dish" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── FEATURES ─── -->
+    <section class="max-w-6xl mx-auto px-6 pb-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <!-- Fast Delivery -->
+            <div class="feature-card flex items-start gap-4" style="animation-delay:0s">
+                <div class="icon-box-orange">
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9" stroke="#f97316" stroke-width="1.8"/>
+                        <path d="M12 7v5l3 3" stroke="#f97316" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="font-bold" style="color:#f5ede3;">Lightning Fast</p>
+                    <p class="text-sm mt-1" style="color:#8a7060;">Average delivery under 30 minutes — we don't keep you waiting.</p>
+                </div>
+            </div>
+
+            <!-- Fresh Ingredients -->
+            <div class="feature-card flex items-start gap-4" style="animation-delay:0.1s">
+                <div class="icon-box-green">
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+                        <path d="M12 3C8 7 4 10 4 14a8 8 0 0016 0c0-4-4-7-8-11z" stroke="#22c55e" stroke-width="1.8" stroke-linejoin="round"/>
+                        <path d="M12 14v5" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="font-bold" style="color:#f5ede3;">Always Fresh</p>
+                    <p class="text-sm mt-1" style="color:#8a7060;">Sourced from local farms and prepared to order — no shortcuts.</p>
+                </div>
+            </div>
+
+            <!-- Secure Packaging -->
+            <div class="feature-card flex items-start gap-4" style="animation-delay:0.2s">
+                <div class="icon-box-blue">
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+                        <rect x="3" y="8" width="18" height="13" rx="2" stroke="#63b3ed" stroke-width="1.8"/>
+                        <path d="M3 10h18M8 8V6a4 4 0 018 0v2" stroke="#63b3ed" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="font-bold" style="color:#f5ede3;">Secure Packaging</p>
+                    <p class="text-sm mt-1" style="color:#8a7060;">Tamper-proof, eco-friendly packaging keeps every meal intact.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ─── BEST DISHES ─── -->
+    <section class="max-w-6xl mx-auto px-6 pb-24">
+        <div class="flex items-end justify-between mb-8">
+            <div>
+                <p class="section-label mb-2">Chef's Picks</p>
+                <h2 style="font-size:2rem; font-weight:900; color:#f5ede3; line-height:1.15;">
+                    Best <span class="st">Dishes</span>
                 </h2>
             </div>
-            <a href="/place-order" class="text-sm font-semibold text-gray-500 hover:text-orange-400 transition flex items-center gap-1.5">
-                Full menu
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                </svg>
-            </a>
+            <a href="/place-order" class="menu-link">Full menu →</a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            <div class="dish-card card-hover rounded-3xl overflow-hidden flex flex-col">
-                <div class="h-52 overflow-hidden relative">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
-                    <img src="images/lasagna.png" alt="Lasagna" class="dish-img w-full h-full object-cover" />
+            <!-- Lasagna -->
+            <div class="dish-card">
+                <div class="dish-img-wrap">
+                    <img src="images/lasagna.png" alt="Lasagna" />
+                    <div class="dish-img-overlay"></div>
                 </div>
-                <div class="p-6 flex flex-col gap-4 flex-1">
+                <div class="dish-body flex flex-col gap-3">
                     <div>
-                        <h4 class="font-bold text-white text-base mb-1">Lasagna</h4>
-                        <p class="text-xs text-gray-500 leading-relaxed">Rich layers of pasta, meat sauce, and béchamel — baked to golden perfection.</p>
+                        <p class="dish-name">Classic Lasagna</p>
+                        <p class="dish-desc">Layers of rich beef ragù, silky béchamel, and melted mozzarella baked to golden perfection.</p>
                     </div>
-                    <a href="/place-order?search=Lasagna" class="btn-primary mt-auto block text-center py-2.5 rounded-full text-xs font-bold text-white">
-                        Order Now
-                    </a>
+                    <a href="/place-order" class="btn-primary text-center text-sm" style="padding: 0.6rem 1rem;">Order Now</a>
                 </div>
             </div>
 
-            <div class="dish-card card-hover rounded-3xl overflow-hidden flex flex-col">
-                <div class="h-52 overflow-hidden relative">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
-                    <img src="images/halohalo.png" alt="Halo-Halo" class="dish-img w-full h-full object-cover" />
+            <!-- Halo-Halo -->
+            <div class="dish-card">
+                <div class="dish-img-wrap">
+                    <img src="images/halohalo.png" alt="Halo-Halo" />
+                    <div class="dish-img-overlay"></div>
                 </div>
-                <div class="p-6 flex flex-col gap-4 flex-1">
+                <div class="dish-body flex flex-col gap-3">
                     <div>
-                        <h4 class="font-bold text-white text-base mb-1">Halo-Halo</h4>
-                        <p class="text-xs text-gray-500 leading-relaxed">The iconic Filipino dessert — shaved ice, leche flan, ube, and fresh fruits.</p>
+                        <p class="dish-name">Halo-Halo</p>
+                        <p class="dish-desc">A festive Filipino dessert of shaved ice, ube ice cream, jellies, and sweet beans.</p>
                     </div>
-                    <a href="/place-order?search=Halo-Halo" class="btn-primary mt-auto block text-center py-2.5 rounded-full text-xs font-bold text-white">
-                        Order Now
-                    </a>
+                    <a href="/place-order" class="btn-primary text-center text-sm" style="padding: 0.6rem 1rem;">Order Now</a>
                 </div>
             </div>
 
-            <div class="dish-card card-hover rounded-3xl overflow-hidden flex flex-col">
-                <div class="h-52 overflow-hidden relative">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
-                    <img src="images/sisig.png" alt="Sisig" class="dish-img w-full h-full object-cover" />
+            <!-- Sisig -->
+            <div class="dish-card">
+                <div class="dish-img-wrap">
+                    <img src="images/sisig.png" alt="Sisig" />
+                    <div class="dish-img-overlay"></div>
                 </div>
-                <div class="p-6 flex flex-col gap-4 flex-1">
+                <div class="dish-body flex flex-col gap-3">
                     <div>
-                        <h4 class="font-bold text-white text-base mb-1">Sisig</h4>
-                        <p class="text-xs text-gray-500 leading-relaxed">Sizzling Kapampangan classic — crispy pork, onions, and calamansi on a hot plate.</p>
+                        <p class="dish-name">Sizzling Sisig</p>
+                        <p class="dish-desc">Crispy, tangy pork sisig served on a hot cast-iron plate — best with steamed rice.</p>
                     </div>
-                    <a href="/place-order?search=Sisig" class="btn-primary mt-auto block text-center py-2.5 rounded-full text-xs font-bold text-white">
-                        Order Now
-                    </a>
+                    <a href="/place-order" class="btn-primary text-center text-sm" style="padding: 0.6rem 1rem;">Order Now</a>
                 </div>
             </div>
 

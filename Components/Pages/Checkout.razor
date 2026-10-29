@@ -5,222 +5,383 @@
 <PageTitle>Checkout | FoodDash</PageTitle>
 
 <style>
-    @@keyframes fadeUp {
-        from { opacity: 0; transform: translateY(18px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
     @@keyframes shimmer {
         0%   { background-position: -200% center; }
         100% { background-position:  200% center; }
     }
-    .animate-fade-up    { animation: fadeUp 0.55s ease both; }
-    .animate-fade-up-d1 { animation: fadeUp 0.55s 0.1s ease both; }
-    .shimmer-text {
-        background: linear-gradient(90deg, #fb923c, #f97316, #fdba74, #f97316, #fb923c);
+
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .st {
+        background: linear-gradient(90deg, #fb923c, #f97316, #fde68a, #f97316, #fb923c);
         background-size: 200% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        animation: shimmer 4s linear infinite;
+        background-clip: text;
+        animation: shimmer 3.5s linear infinite;
     }
-    .btn-primary {
-        background: linear-gradient(135deg, #f97316, #ea580c);
-        transition: all 0.25s ease;
-        box-shadow: 0 8px 24px rgba(249,115,22,0.4);
+
+    .section-label {
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #7c6450;
     }
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 16px 36px rgba(249,115,22,0.55);
+
+    .back-link {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #4a3a2e;
+        text-decoration: none;
+        transition: color 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
     }
+
+    .back-link:hover { color: #fb923c; }
+
+    /* Glass card / panel */
+    .glass-card {
+        background: linear-gradient(160deg, rgba(255,180,60,0.06) 0%, rgba(255,255,255,0.02) 100%);
+        border: 1px solid rgba(255,180,60,0.12);
+        box-shadow: inset 0 1px 0 rgba(255,200,120,0.07), 0 8px 32px rgba(0,0,0,0.45);
+        border-radius: 1.5rem;
+    }
+
+    .form-panel {
+        background: linear-gradient(160deg, rgba(255,180,60,0.06) 0%, rgba(255,255,255,0.02) 100%);
+        border: 1px solid rgba(255,180,60,0.12);
+        box-shadow: inset 0 1px 0 rgba(255,200,120,0.07), 0 8px 32px rgba(0,0,0,0.45);
+        border-radius: 1.5rem;
+        padding: 2rem;
+    }
+
+    /* Section header inside form */
+    .form-section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .form-section-icon {
+        width: 36px; height: 36px;
+        border-radius: 0.625rem;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(249,115,22,0.14);
+        flex-shrink: 0;
+    }
+
+    .form-section-title {
+        font-weight: 800;
+        font-size: 0.97rem;
+        color: #f5ede3;
+    }
+
+    /* Input fields */
+    .field-label {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #7c6450;
+        margin-bottom: 0.4rem;
+    }
+
     .form-input {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.09);
-        color: white;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-    .form-input::placeholder { color: #4b5563; }
-    .form-input:focus {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        background: rgba(255,180,60,0.04);
+        border: 1px solid rgba(255,180,60,0.14);
+        color: #f5ede3;
+        font-size: 0.9rem;
         outline: none;
-        border-color: rgba(249,115,22,0.5);
-        box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+        transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .sidebar {
-        background: linear-gradient(145deg, #1a1a1c, #141416);
-        border: 1px solid rgba(255,255,255,0.07);
+
+    .form-input::placeholder { color: #4a3a2e; }
+
+    .form-input:focus {
+        border-color: rgba(249,115,22,0.6);
+        box-shadow: 0 0 0 3px rgba(249,115,22,0.12);
+        outline: none;
     }
-    .form-card {
-        background: linear-gradient(145deg, #1a1a1c, #141416);
-        border: 1px solid rgba(255,255,255,0.07);
-    }
-    .pay-label {
+
+    textarea.form-input { resize: vertical; min-height: 5rem; }
+
+    /* Payment method card */
+    .pay-card-label {
         display: block;
         cursor: pointer;
+        border-radius: 0.875rem;
+        border: 1.5px solid rgba(255,180,60,0.14);
+        background: rgba(255,180,60,0.04);
+        padding: 0.875rem 1rem;
+        transition: border-color 0.2s, background 0.2s;
     }
-    .pay-box {
-        border: 1.5px solid rgba(255,255,255,0.08);
-        background: rgba(255,255,255,0.03);
-        transition: all 0.2s ease;
+
+    .pay-card-label:has(input:checked) {
+        border-color: rgba(249,115,22,0.60);
+        background: rgba(249,115,22,0.10);
+        box-shadow: 0 0 0 3px rgba(249,115,22,0.10);
     }
-    .pay-label:has(input:checked) .pay-box {
-        border-color: #f97316;
-        background: rgba(249,115,22,0.08);
-        box-shadow: 0 0 0 1px rgba(249,115,22,0.2);
+
+    .pay-card-label:hover {
+        border-color: rgba(249,115,22,0.35);
+        background: rgba(249,115,22,0.07);
     }
-    .pay-dot {
-        transition: all 0.2s ease;
+
+    .pay-radio {
+        accent-color: #f97316;
+        width: 16px; height: 16px;
     }
-    .pay-label:has(input:checked) .pay-dot {
-        background: #f97316;
-        box-shadow: 0 0 6px rgba(249,115,22,0.6);
-    }
-    .divider { border-color: rgba(255,255,255,0.07); }
-    .section-label {
-        font-size: 0.65rem;
+
+    /* Divider */
+    .divider { border-color: rgba(255,180,60,0.10); }
+
+    /* Primary button */
+    .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.875rem 2rem;
+        border-radius: 0.875rem;
+        background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
+        box-shadow: 0 6px 24px rgba(249,115,22,0.45);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        color: #fff;
         font-weight: 700;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: #6b7280;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        width: 100%;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 36px rgba(249,115,22,0.6);
+    }
+
+    /* Ghost btn */
+    .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 0.75rem 1.75rem;
+        border-radius: 0.875rem;
+        border: 1.5px solid rgba(249,115,22,0.35);
+        color: #fb923c;
+        font-weight: 700;
+        transition: background 0.2s, border-color 0.2s;
+        cursor: pointer;
+        text-decoration: none;
+        background: transparent;
+    }
+
+    .btn-ghost:hover {
+        background: rgba(249,115,22,0.09);
+        border-color: #f97316;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        background: linear-gradient(160deg, rgba(255,180,60,0.06) 0%, rgba(255,255,255,0.02) 100%);
+        border: 1px solid rgba(255,180,60,0.12);
+        box-shadow: inset 0 1px 0 rgba(255,200,120,0.07), 0 8px 32px rgba(0,0,0,0.45);
+        border-radius: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    .summary-item-img {
+        width: 44px; height: 44px;
+        object-fit: cover;
+        border-radius: 0.625rem;
+        flex-shrink: 0;
     }
 </style>
 
-<div class="min-h-screen bg-[#0e0e10] text-white">
+<div class="min-h-screen w-full" style="background: radial-gradient(ellipse 140% 65% at 50% -5%, rgba(249,115,22,0.28) 0%, rgba(180,60,0,0.10) 38%, transparent 62%), linear-gradient(170deg, #1c0f06 0%, #100c08 45%, #0a080d 100%);">
+    <div class="max-w-5xl mx-auto px-6 pt-10 pb-24">
 
-    <!-- Background glow -->
-    <div class="pointer-events-none fixed inset-0 overflow-hidden">
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-orange-500/8 blur-[130px]"></div>
-        <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] rounded-full bg-orange-700/6 blur-[110px]"></div>
-    </div>
+        <!-- Back link -->
+        <a href="/cart" class="back-link mb-6 block">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Cart
+        </a>
 
-    <div class="relative max-w-5xl mx-auto px-8 pt-10 pb-28">
-
-        <!-- Header -->
-        <div class="mb-10 animate-fade-up">
-            <a href="/cart" class="inline-flex items-center gap-1.5 text-gray-600 hover:text-orange-400 text-xs font-semibold mb-4 transition">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-                </svg>
-                Back to Cart
-            </a>
-            <h1 class="text-4xl font-black text-white">Complete <span class="shimmer-text">Order</span></h1>
-            <p class="text-sm text-gray-500 mt-1.5">Enter your delivery details and confirm.</p>
+        <!-- Heading -->
+        <div class="mb-8" style="animation: fadeUp 0.6s ease both;">
+            <p class="section-label mb-2">Almost There</p>
+            <h1 style="font-size:2.5rem; font-weight:900; color:#f5ede3; line-height:1.1;">
+                Complete <span class="st">Order</span>
+            </h1>
+            <p class="mt-2" style="color:#8a7060;">Fill in your details and confirm your order below.</p>
         </div>
 
-        @if (Cart.Items.Count == 0)
+        @if (!Cart.Items.Any())
         {
-            <div class="text-center py-28 rounded-3xl border border-white/5 bg-white/[0.02]">
-                <p class="text-white font-bold text-lg mb-1">Nothing to check out</p>
-                <p class="text-sm text-gray-600 mb-8">Your cart is empty. Add some dishes first!</p>
-                <a href="/place-order" class="btn-primary px-8 py-3 rounded-full text-sm font-bold text-white inline-block">Browse Menu</a>
+            <div class="glass-card p-12 flex flex-col items-center text-center" style="animation: fadeUp 0.6s ease both;">
+                <svg width="56" height="56" fill="none" viewBox="0 0 24 24" stroke="rgba(255,180,60,0.28)" stroke-width="1.3" class="mb-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 5.3A1 1 0 006 20h12M17 20a1 1 0 100 2 1 1 0 000-2zM9 20a1 1 0 100 2 1 1 0 000-2z"/>
+                </svg>
+                <p style="font-size:1.25rem; font-weight:800; color:#f5ede3;" class="mb-2">Your cart is empty</p>
+                <p style="color:#8a7060;" class="text-sm mb-6">Add some items before checking out.</p>
+                <a href="/place-order" class="btn-ghost">Browse Menu</a>
             </div>
         }
         else
         {
-            <div class="flex flex-col lg:flex-row gap-8 items-start animate-fade-up-d1">
+            <div class="flex flex-col lg:flex-row gap-8 items-start" style="animation: fadeUp 0.65s ease 0.05s both;">
 
-                <!-- Form -->
-                <div class="flex-1 form-card rounded-3xl p-8">
+                <!-- ── LEFT: EditForm ── -->
+                <div class="flex-1">
                     <EditForm Model="details" OnValidSubmit="PlaceOrder">
                         <DataAnnotationsValidator />
 
-                        <!-- Delivery Info -->
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
-                                <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                </svg>
-                            </div>
-                            <p class="section-label">Delivery Information</p>
-                        </div>
+                        <div class="form-panel flex flex-col gap-8">
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                            <!-- Delivery Information -->
                             <div>
-                                <label for="fullName" class="block text-xs font-bold text-gray-400 mb-2">Full Name</label>
-                                <InputText id="fullName" @bind-Value="details.FullName"
-                                           class="form-input w-full px-4 py-3 rounded-xl text-sm"
-                                           placeholder="Juan Dela Cruz" />
-                                <ValidationMessage For="() => details.FullName" class="text-xs text-red-400 mt-1.5" />
+                                <div class="form-section-header">
+                                    <div class="form-section-icon">
+                                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#f97316" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        </svg>
+                                    </div>
+                                    <span class="form-section-title">Delivery Information</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="field-label">Full Name</label>
+                                        <InputText class="form-input" @bind-Value="details.FullName" placeholder="Juan dela Cruz" />
+                                        <ValidationMessage For="() => details.FullName" />
+                                    </div>
+                                    <div>
+                                        <label class="field-label">Phone</label>
+                                        <InputText class="form-input" @bind-Value="details.Phone" placeholder="+63 9XX XXX XXXX" />
+                                        <ValidationMessage For="() => details.Phone" />
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label class="field-label">Delivery Address</label>
+                                        <InputTextArea class="form-input" @bind-Value="details.Address" placeholder="Street, Barangay, City, Province" rows="3" />
+                                        <ValidationMessage For="() => details.Address" />
+                                    </div>
+                                </div>
                             </div>
+
+                            <!-- Payment Method -->
                             <div>
-                                <label for="phone" class="block text-xs font-bold text-gray-400 mb-2">Phone Number</label>
-                                <InputText id="phone" type="tel" @bind-Value="details.Phone"
-                                           class="form-input w-full px-4 py-3 rounded-xl text-sm"
-                                           placeholder="0917 123 4567" />
-                                <ValidationMessage For="() => details.Phone" class="text-xs text-red-400 mt-1.5" />
-                            </div>
-                            <div class="md:col-span-2">
-                                <label for="address" class="block text-xs font-bold text-gray-400 mb-2">Delivery Address</label>
-                                <InputTextArea id="address" @bind-Value="details.Address" rows="3"
-                                              class="form-input w-full px-4 py-3 rounded-xl text-sm resize-none"
-                                              placeholder="123 Mabini St., Brgy. San Lorenzo..." />
-                                <ValidationMessage For="() => details.Address" class="text-xs text-red-400 mt-1.5" />
-                            </div>
-                        </div>
+                                <div class="form-section-header">
+                                    <div class="form-section-icon">
+                                        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#f97316" stroke-width="1.8">
+                                            <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                            <path stroke-linecap="round" d="M2 10h20"/>
+                                        </svg>
+                                    </div>
+                                    <span class="form-section-title">Payment Method</span>
+                                </div>
 
-                        <!-- Payment Method -->
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
-                                <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <rect x="1" y="4" width="22" height="16" rx="2"/>
-                                    <line x1="1" y1="10" x2="23" y2="10"/>
-                                </svg>
-                            </div>
-                            <p class="section-label">Payment Method</p>
-                        </div>
+                                <InputRadioGroup @bind-Value="details.PaymentMethod">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
-                        <InputRadioGroup @bind-Value="details.PaymentMethod">
-                            <div class="grid grid-cols-2 gap-3 mb-8">
-                                @foreach (var method in DeliveryDetails.PaymentMethods)
-                                {
-                                    <label class="pay-label">
-                                        <InputRadio Value="@method" class="sr-only" />
-                                        <div class="pay-box flex items-center gap-3 p-4 rounded-2xl">
-                                            <div class="w-4 h-4 rounded-full border-2 border-gray-600 flex items-center justify-center shrink-0">
-                                                <div class="pay-dot w-2 h-2 rounded-full bg-transparent"></div>
+                                        <label class="pay-card-label flex items-center gap-3">
+                                            <InputRadio class="pay-radio" Value="@("Cash on Delivery")" />
+                                            <div>
+                                                <p style="font-weight:700; color:#f5ede3; font-size:0.88rem;">Cash on Delivery</p>
+                                                <p style="font-size:0.74rem; color:#7c6450;">Pay when it arrives</p>
                                             </div>
-                                            <span class="text-sm font-bold text-gray-300">@method</span>
-                                        </div>
-                                    </label>
-                                }
+                                        </label>
+
+                                        <label class="pay-card-label flex items-center gap-3">
+                                            <InputRadio class="pay-radio" Value="@("GCash")" />
+                                            <div>
+                                                <p style="font-weight:700; color:#f5ede3; font-size:0.88rem;">GCash</p>
+                                                <p style="font-size:0.74rem; color:#7c6450;">Mobile wallet payment</p>
+                                            </div>
+                                        </label>
+
+                                        <label class="pay-card-label flex items-center gap-3">
+                                            <InputRadio class="pay-radio" Value="@("Credit / Debit Card")" />
+                                            <div>
+                                                <p style="font-weight:700; color:#f5ede3; font-size:0.88rem;">Credit / Debit Card</p>
+                                                <p style="font-size:0.74rem; color:#7c6450;">Visa, Mastercard, JCB</p>
+                                            </div>
+                                        </label>
+
+                                        <label class="pay-card-label flex items-center gap-3">
+                                            <InputRadio class="pay-radio" Value="@("Maya")" />
+                                            <div>
+                                                <p style="font-weight:700; color:#f5ede3; font-size:0.88rem;">Maya</p>
+                                                <p style="font-size:0.74rem; color:#7c6450;">Pay via Maya wallet</p>
+                                            </div>
+                                        </label>
+
+                                    </div>
+                                </InputRadioGroup>
+
+                                <ValidationMessage For="() => details.PaymentMethod" />
                             </div>
-                        </InputRadioGroup>
 
-                        <!-- Submit -->
-                        <button type="submit" class="btn-primary w-full py-4 rounded-full font-black text-white text-base flex items-center justify-center gap-3">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Confirm &amp; Place Order
-                        </button>
+                            <!-- Submit -->
+                            <button type="submit" class="btn-primary">
+                                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Confirm &amp; Place Order
+                            </button>
 
+                        </div>
                     </EditForm>
                 </div>
 
-                <!-- Sidebar Summary -->
-                <div class="w-full lg:w-72 shrink-0 sidebar rounded-3xl p-6 sticky top-6">
-                    <p class="section-label mb-5">Order Summary</p>
+                <!-- ── RIGHT: Sidebar ── -->
+                <div class="sidebar w-full lg:w-80 lg:sticky lg:top-8">
+                    <p class="section-label mb-4">Order Summary</p>
 
-                    <div class="space-y-3 mb-5">
-                        @foreach (var c in Cart.Items)
+                    <div class="flex flex-col gap-3 mb-4">
+                        @foreach (var item in Cart.Items)
                         {
-                            <div class="flex justify-between text-sm text-gray-500">
-                                <span class="flex-1 mr-3 truncate">@c.Quantity × @c.Item.Name</span>
-                                <span class="font-semibold text-gray-300 shrink-0">₱@c.TotalPrice.ToString("N2")</span>
+                            <div class="flex items-center gap-3">
+                                <img class="summary-item-img" src="images/@(item.MenuItem.ImageFile)" alt="@item.MenuItem.Name" />
+                                <div class="flex-1 min-w-0">
+                                    <p style="font-weight:700; color:#f5ede3; font-size:0.85rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">@item.MenuItem.Name</p>
+                                    <p style="font-size:0.74rem; color:#7c6450;">x@item.Quantity</p>
+                                </div>
+                                <span style="font-weight:700; color:#f5ede3; font-size:0.85rem; flex-shrink:0;">₱@((item.MenuItem.Price * item.Quantity).ToString("N2"))</span>
                             </div>
                         }
-                        <div class="flex justify-between text-sm text-gray-600 pt-2">
-                            <span>Delivery Fee</span>
-                            <span class="font-semibold text-emerald-400">Free</span>
-                        </div>
                     </div>
 
-                    <div class="border-t divider pt-4 flex justify-between items-center">
-                        <span class="font-bold text-white">Total</span>
-                        <span class="text-2xl font-black text-orange-400">₱@Cart.Total.ToString("N2")</span>
+                    <div class="flex justify-between mb-2">
+                        <span style="color:#8a7060; font-size:0.85rem;">Delivery Fee</span>
+                        <span style="color:#22c55e; font-weight:700; font-size:0.85rem;">Free</span>
+                    </div>
+
+                    <hr class="divider my-4" />
+
+                    <div class="flex justify-between items-baseline">
+                        <span style="color:#f5ede3; font-weight:800;">Total</span>
+                        <span class="st" style="font-size:1.3rem; font-weight:900;">₱@Cart.Subtotal.ToString("N2")</span>
                     </div>
                 </div>
 
             </div>
         }
+
     </div>
 </div>
 
@@ -229,7 +390,6 @@
 
     private void PlaceOrder()
     {
-        if (Cart.Items.Count == 0) return;
         Cart.PlaceOrder(details);
         Nav.NavigateTo("/track-order");
     }
